@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Guillaume Eynard-Bontemps, CNES (Centre National d’Etudes Spatiales - French Space Agency)">
+  <meta name="dcterms.date" content="2020-11-16">
+  <title>Introduction to Cloud Computing</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/solarized.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Introduction to Cloud Computing</h1>
+  <p class="author">Guillaume Eynard-Bontemps, CNES (Centre National
+d’Etudes Spatiales - French Space Agency)</p>
+  <p class="date">2020-11-16</p>
+</section>
+
+<section>
+<section id="credits-and-thanks" class="title-slide slide level1">
+<h1>Credits and thanks</h1>
+
+</section>
+<section id="didnt-do-this" class="slide level2">
+<h2>Didn’t do this</h2>
+<p>Thanks to <a href="mailto:florient.f.chouteau@airbus.com">Florient
+Chouteau</a> and <a href="mailto:Dennis.WILSON@isae-supaero.fr">Dennis
+Wilson</a></p>
+<p>for their work on this subject.</p>
+<p>I took most of the content from theirs:</p>
+<ul>
+<li><a
+href="https://supaerodatascience.github.io/OBD/1_1_overview.html">https://supaerodatascience.github.io/OBD/1_1_overview.html</a></li>
+<li><a
+href="https://supaerodatascience.github.io/OBD/slides/1_1_cloud_computing.html">https://supaerodatascience.github.io/OBD/slides/1_1_cloud_computing.html</a></li>
+<li><a
+href="https://supaerodatascience.github.io/OBD/slides/1_2_cloud_usage.html">https://supaerodatascience.github.io/OBD/slides/1_2_cloud_usage.html</a></li>
+<li><a
+href="https://supaerodatascience.github.io/OBD/slides/1_3_gcp.html">https://supaerodatascience.github.io/OBD/slides/1_3_gcp.html</a></li>
+</ul>
+</section></section>
+<section>
+<section id="what-is-the-cloud" class="title-slide slide level1">
+<h1>What is the Cloud?</h1>
+
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<p><img
+data-src="https://nerds.net/wp-content/uploads/2018/02/cloud-computer-reality-750x646.jpg" /></p>
+</section>
+<section id="but-its-a-bit-bigger" class="slide level2">
+<h2>But it’s a bit bigger…</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><img
+data-src="https://supaerodatascience.github.io/OBD/slides/static/img/fb_datacenter.jpg" /></p>
+</div><div class="column" style="width:70%;">
+<p><img
+data-src="https://www.datacenterknowledge.com/sites/datacenterknowledge.com/files/wp-content/uploads/2013/06/lulea-rows.jpg"
+style="width:35.0%" /> <img
+data-src="https://www.datacenterknowledge.com/sites/datacenterknowledge.com/files/wp-content/uploads/2013/06/fb-lulea-external-fans.jpg"
+style="width:35.0%" /></p>
+<p><img
+data-src="https://cdn.arstechnica.net/wp-content/uploads/2013/02/openrack2-640x426.jpg"
+style="width:35.0%" /> <img
+data-src="https://engineering.fb.com/wp-content/uploads/2015/05/GM23qAAlFJW8xm4BABnMiwAAAAAAbj0JAAAD.png"
+style="width:35.0%" /></p>
+<p>(Facebook’s data center &amp; server racks)</p>
+</div>
+</div>
+</section>
+<section id="google-cloud-data-center-locations" class="slide level2">
+<h2>Google Cloud Data Center locations</h2>
+<figure>
+<img data-src="https://cloud.google.com/images/locations/regions.png"
+alt="Data Centers" />
+<figcaption aria-hidden="true">Data Centers</figcaption>
+</figure>
+</section>
+<section id="cloud-definition" class="slide level2">
+<h2>Cloud Definition</h2>
+<blockquote>
+<p>The cloud is a real physical place - accessed over the internet -
+where a service is performed for you or where your stuff is stored. Your
+stuff is stored in the cloud, not on your device because the cloud is
+not on any device; the cloud lives in datacenters. A program running on
+your device accesses the cloud over the internet. The cloud is infinite,
+accessible from anywhere, at any time</p>
+</blockquote>
+<p>Todd Hoff in “Explain the Cloud like I’m 10”</p>
+</section>
+<section id="cloud-computing" class="slide level2">
+<h2>Cloud Computing</h2>
+<p>Using cloud resources for any purpose, web server, storage,
+computations.</p>
+<ul>
+<li>The cloud is a set of <strong>cloud providers</strong></li>
+<li>Renting cloud <strong>services</strong></li>
+<li>Increasingly <strong>abstracted</strong> from the physical
+hardware</li>
+</ul>
+<div class="fragment">
+<p>Examples:</p>
+<ul>
+<li>“Renting a server” … (this is pure “cloud computing”)</li>
+<li>“Replicated &amp; Secure storage space”</li>
+<li>“Autoscaling deployment of a microservice”</li>
+</ul>
+</div>
+</section>
+<section id="a-portion-of-aws-services" class="slide level2"
+data-background-image="https://www.matthewb.id.au/cloud/images/AWS-Services.png"
+data-background-size="contains">
+<h2
+data-background-image="https://www.matthewb.id.au/cloud/images/AWS-Services.png"
+data-background-size="contains">A portion of AWS services</h2>
+</section>
+<section id="quizz" class="slide level2">
+<h2>Quizz</h2>
+<p>What’s the Cloud?</p>
+<ul>
+<li>Answer A: Still don’t know…</li>
+<li>Answer B: A magic place where my photos and alikes are</li>
+<li>Answer C: Someone else computer</li>
+<li>Answer D: Several big Data centers around the world that host data
+and service</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_418">Answer link</a>
+<em>Key: zq</em></p>
+</section>
+<section id="how" class="slide level2">
+<h2>How?</h2>
+</section></section>
+<section>
+<section id="virtualization" class="title-slide slide level1">
+<h1>Virtualization</h1>
+
+</section>
+<section id="definition" class="slide level2">
+<h2>Definition</h2>
+<blockquote>
+<p>In computing, virtualization refers to the act of creating a virtual
+(rather than actual) version of something, including virtual computer
+hardware platforms, storage devices, and computer network resources.</p>
+</blockquote>
+<p>Wikipedia</p>
+<blockquote>
+<p>Basically we are running software on “abstract hardware” which is a
+“portion” of a real computer (“bare metal”)</p>
+</blockquote>
+</section>
+<section id="desktop-virtualization" class="slide level2">
+<h2>Desktop virtualization</h2>
+<p><img data-src="images/virtualization.png" style="width:75.0%" /></p>
+</section>
+<section id="server-virtualization" class="slide level2">
+<h2>Server virtualization</h2>
+<p><img
+data-src="images/illustration-of-the-concept-of-Virtualization-7.png" /></p>
+</section>
+<section id="virtualization-evolution" class="slide level2">
+<h2>Virtualization evolution</h2>
+<p><img
+data-src="https://miro.medium.com/max/10698/1*wE7TrQmFyRTDwh6VpbkbMQ.png" /></p>
+</section>
+<section id="definitions" class="slide level2">
+<h2>Definitions</h2>
+<ul>
+<li><strong>Hypervisor</strong> (VMWare, Virtualbox, KVM): A hypervisor
+is a program for creating and running virtual machines</li>
+<li><strong>Virtual Machine</strong>: A virtual machine is the emulated
+equivalent of a computer system that runs on top of another system</li>
+<li><strong>Containers</strong>: Isolated environments that share the
+same underlying OS (more this afternoon) &amp; resources</li>
+</ul>
+</section>
+<section id="opens-up-new-possibilities" class="slide level2">
+<h2>Opens up new possibilities</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="hardware-abstraction">Hardware abstraction</h3>
+<ul>
+<li>Hardware Abstraction (“download more RAM”)</li>
+<li>Fine-grained resource allocation / sharing</li>
+<li>Decouple maintenance of hardware from maintenance of software</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="reliability-security">Reliability, security…</h3>
+<figure>
+<img
+data-src="https://yogeek.github.io/enseignement/Introduction_Virtualisation_CloudComputing/img/vm_charge_repartition.gif"
+alt="balancing" />
+<figcaption aria-hidden="true">balancing</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="quizz-1" class="slide level2">
+<h2>Quizz</h2>
+<p>Virtualization allows… (multiple choices)</p>
+<ul>
+<li>Answer A: Hardware abstraction, download a machine with more
+ram</li>
+<li>Answer B: Resources sharing optimization</li>
+<li>Answer C: Building immersive video games</li>
+<li>Answer D: Reliability</li>
+<li>Answer E: Reproducibility</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_702">Answer link</a>
+<em>Ket: un</em></p>
+</section></section>
+<section>
+<section id="cloud-history" class="title-slide slide level1">
+<h1>Cloud history</h1>
+
+</section>
+<section id="aws" class="slide level2">
+<h2>AWS</h2>
+<p>Once upon a time…</p>
+<p>Amazon (the e-commerce store) has “scaling” issues</p>
+<p><img
+data-src="https://cdn.chiefmartec.com/wp-content/uploads/2016/11/jeff_bezos_big_mandate.jpg" /></p>
+</section>
+<section id="idea" class="slide level2">
+<h2>Idea</h2>
+<p>2002-2003; The idea</p>
+<blockquote>
+<p>Building an infrastructure that is completely standardized,
+completely automated, and relied extensively on web services for things
+like storage</p>
+</blockquote>
+<p><a
+href="http://blog.b3k.us/2009/01/25/ec2-origins.html">http://blog.b3k.us/2009/01/25/ec2-origins.html</a></p>
+</section>
+<section id="so" class="slide level2">
+<h2>So …</h2>
+<p>Basically Amazon became very good at <em>running</em> scalable
+infrastructure as <em>services</em></p>
+<ul>
+<li>For themselves…</li>
+<li>… but also for other partners (target)</li>
+</ul>
+<p>And that infrastructure is often there to answer peak load…</p>
+</section>
+<section id="lets-sell-it" class="slide level2">
+<h2>Let’s sell it !</h2>
+<p><img
+data-src="https://fchouteau.github.io/isae-practical-gcp/static/img/ec2.png" /></p>
+</section></section>
+<section>
+<section id="the-many-layers-of-cloud-computing"
+class="title-slide slide level1">
+<h1>The many layers of Cloud Computing</h1>
+
+</section>
+<section id="public-hybrid-private" class="slide level2">
+<h2>Public, hybrid, private</h2>
+<figure>
+<img
+data-src="https://lh5.googleusercontent.com/e-i1nyv49RP3F3ZCHSepEZ4k_qYhqqgk496wDcsOkHLBbaT7deOuXi3AxesN6LNbQMWXJreOzRqpRbUkNgpFMhX8oxQvbAzAsIi8DObI9xWwq0d5lUfZmAlSbJf5ry-Vmto7i2JL"
+style="width:50.0%" alt="From Padok" />
+<figcaption aria-hidden="true">From Padok</figcaption>
+</figure>
+</section>
+<section id="different-layers-of-abstractions" class="slide level2">
+<h2>Different layers of abstractions</h2>
+<p><img
+data-src="images/../../images/modeles-de-services-cloud.png" /></p>
+</section>
+<section id="abstraction-examples" class="slide level2">
+<h2>Abstraction examples</h2>
+<ul>
+<li>Using data storage service like google cloud storage without
+managing the infrastructure ?aaS</li>
+<li>Using google drive ?aaS</li>
+<li>Renting a server with hard drive and storing data ?aaS</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Using data storage service like google cloud storage without
+managing the infrastructure <strong>PaaS</strong></li>
+<li>Using google drive <strong>SaaS</strong></li>
+<li>Renting a server with hard drive and storing data
+<strong>IaaS</strong></li>
+</ul>
+</div>
+</section>
+<section id="quizz-2" class="slide level2">
+<h2>Quizz</h2>
+<p>What means IaaS?</p>
+<ul>
+<li>Answer A: I am a Sociopath</li>
+<li>Answer B: Information as a System</li>
+<li>Answer C: Information as a Service</li>
+<li>Answer D: Infrastructure as a Service</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAHB0lEQVR42u3dUa+rKBQG0HHS//+Xex9O0jRVKYqbDXWtp5uZ00qpnyBUWJ7P539Anv9VAeR6fP2LZVle/9ZswuWWdbr+Uvf3X/b+fewYZ1+4eS34vQvBJfUTV7C1dVE/PsLHC127q1rCZVkGr6nn87l3TohZXJ3XxPLjP64DOf7ZNco94Wb9vtrASU+jWc71eSt2fdp8fJz3bhQn7wnPnR+F3uPlN5nnOj/vJXxdYtbXmkJHa/1nm9evcnt4tKI+inq0DlsupoXKKWTM5bu2Jbz2cvWq9/XX8/6/Ljni+xvWv2ehhJWvej/QRxk+bqFf599mi7d3dpYr6q+Dd7QOPwp8VQILL5HAY93RoPufwtd2SQ5P9OUKJTz6qsLQRcuZ9/VY5+rw6EduSeC1l9q7dEf/2oQO9XXtITp/wXt3zuuqG/Pyf+3g9mb7vFc52sOqe8I+I5AXfhl7V+j+hV/f6f3GabeXwM07WzEbpTu6eb9UGKu4MDaHemU1Jaws/KFPUfPHe/ecl1TRiXvglkPI5/ca+3rn1piH9ZBj42BmoenbHN5sKWF94fdGR8vlL7+qPDp64vs6Oi599J1N1p8Miwq61dVauzT6PSE/T/y0hED8wAwghCCEgBCCEAJCCEIICCEIISCEIISAEIIQAkIIQggIIQghIIQwkk5rzAy4BnPNaradj55b8/VFyn3P3DNESwi6o4AQghACQghCCFwlcxn8AYfpcws/YDn39mPs8/KpzxAtIeiOAkIIQggIIQghUDbcTr2Ng8URg9r1z1s0/mXEgx2NkwSN7zngRM6Au+JqCUEIQQgBIQQhBIQQ7umhCt5FzEbUm3p6JmIuREsICCEIISCEIISAEMIPM0XxXePCRLk7N0TMr5i30BKCEAJCCEIICCEIIdBuuCmK3PHrblsvTP2X3R4rGfAM0RKC7igghCCEgBCCEAJXyZyiyN2jOKLwvzcb0W3i4ffOEC0hCCEghCCEgBCCEAJlnaYorO1zWsQcQ+PRI773O58hWkIQQhBCQAhBCAEhhHtaRhsajhgTn3phoogtIhrLOUt9Drj9uJYQdEcBIQQhBIQQhBB46TRFkbvcUMToecTEw4CD77kHiihntwdQtISgOwoIIQghIIQghEBZ5hTFptzf8s/y8lmWRcqdRqqXW59aQtAdBSEEhBCEEBBCuKfMvShyB6BzZ00aC9/t6N1Waur2dWgJASEEIQSEEIQQEEIYxCPx2N3GmrvtnRCxdFXucljdvriI5xhyJ8a0hKA7CgghCCEghCCEQNkyxZJBuSPdjeUc8Ff/EStKzfLyAc8lLSHojoIQAkIIQggIIdzTcHtRbJp6H+kB97eI+ET17zn1NJKWEHRHASEEIQSEEIQQuMpwT1F0G0GeekR+lpmYbt97twrREoLuKCCEIISAEIIQAleZY4qiXrcljBqP3ij3QBG1FHGGTLGImZYQhBCEUBWAEIIQAkIIt9Vpu+zGSYLGsebcoeqIEfkBZ00aP3v9GVL/iSK2H9cSgu4oIIQghIAQghACV8l8imLA391HHL2+SAOOnk89FzLL8xZaQtAdBSEEhBCEEBBCuKdllsVwJq7imbcKn2WLiNxFrrSEoDsKCCEIISCEIITACY95iz7gL/S7LUiVOxvRuChTxPeeO5mhJQTdUUAIQQgBIQQhBE6YYy+KTd2GvyOOPuCaTo1fXLfnGCJmTXLnLbSEoDsKQggIIQghIIRwT8M9RdHtN/IDrnAVsX94427bEYUf8AEUe1GA7igghCCEgBCCEAL9zbHQU+7KQvVF2pT7tEe9xscLIob+p95hQksIuqOAEIIQAkIIQgiUPe7wISNWAbrJTs4Ru1ZE1NLUz9loCUF3FIQQEEIQQkAI4Z46TVFELGEUcfQB91Ju1G0T7G5D//VLVw34wISWEIQQEEIQQkAIQQiBl8ztsnM1rhPVOCbe7ZmDWZ4LiajPxpNBSwi6o4AQghACQghCCIRa+gzO5v7IvdvRI1Yryp2NiPjsuRtU5NaSlhB0RwEhBCEEhBCEEHgZbi+KbnsS1B+927pGjUeP2No6YoIkd3OOAR/o0RKCEIIQAkIIQggIIdzTQxVcqNuqSgNu1h2x6UXjJ4qYidESgu4oIIQghIAQghACVzFF8V23rRe6vWfuUkv179m4WXfuJu1aQtAdBYQQhBAQQhBCoGy4KYrcweJuu1g3Hj1i/aUBv47GSs7dYUJLCLqjgBCCEAJCCEIIlGVOUQy4K0C93DWdcpcwyt1MovHlA85baAlBdxSEEBBCEEJACOGelgF/VA5aQkAIQQgBIQQhBIQQhBAQQhBCQAhBCAEhBCEEhBCEEBBCEEJACEEIASEEIQSEEIQQEEIQQkAIQQgBIQQhBIQQhBAQQhBCQAhhGv8A6MS7emWdfWEAAAAASUVORK5CYII="
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_743">Answer link</a>
+<em>Key: gk</em></p>
+</section></section>
+<section>
+<section id="cloud-engines" class="title-slide slide level1">
+<h1>Cloud Engines</h1>
+
+</section>
+<section id="public" class="slide level2">
+<h2>Public</h2>
+<figure>
+<img
+data-src="https://yogeek.github.io/enseignement/Introduction_Virtualisation_CloudComputing/img/cloud_vendors.jpg"
+alt="Cloud Vendors" />
+<figcaption aria-hidden="true">Cloud Vendors</figcaption>
+</figure>
+</section>
+<section id="public-european" class="slide level2">
+<h2>Public (European)</h2>
+<p><img
+data-src="https://www.comptoir-hardware.com/images/stories/_logos/ovhcloud.png"
+style="width:20.0%" /> <img
+data-src="https://cloud.orange.com/ui/app/static/assets/brand/logo_header_login.png"
+style="width:20.0%" /> <img
+data-src="https://open-telekom-cloud.com/resource/blob/data/594220/5aa8c4c54f7a8b90fe1256f26948fbe7/open-telekom-cloud-tsystems-logo.png"
+style="width:20.0%" /></p>
+<p>Academic, public founded:</p>
+<p><img
+data-src="https://www.data-infrastructure.eu/GAIAX/Redaktion/EN/Bilder/gaia-x.jpg?__blob=normal&amp;v=1&amp;size=834w"
+style="width:20.0%" alt="gaiax" /> <img
+data-src="https://eosc-portal.eu/sites/all/themes/theme1/logo.png"
+style="width:20.0%" alt="EOSC" /></p>
+</section>
+<section id="privateon-premise" class="slide level2">
+<h2>Private/on premise</h2>
+<p><img
+data-src="http://1.bp.blogspot.com/-1BuI8MUh498/Uc4BOPBpChI/AAAAAAAAGjk/XWA0iYO5drA/s1028/Screen+Shot+2013-06-28+at+12.03.11+PM.png" /></p>
+</section>
+<section id="leaders" class="slide level2">
+<h2>Leaders</h2>
+<p><img
+data-src="https://cdn.statcdn.com/Infographic/images/normal/18819.jpeg"
+style="width:50.0%" /></p>
+</section>
+<section id="in-france" class="slide level2">
+<h2>In France</h2>
+<p><img
+data-src="https://i2.wp.com/datacenter-magazine.fr/contenus/uploads/2020/03/CORE_MARKESS_PRG_OPE_19-20_COMPETITIVE_ENVIRONMENT_PRESSE_MARS-2020.png?resize=600%2C340&amp;ssl=1" /></p>
+</section></section>
+<section>
+<section id="cloud-computing-usage-revolution"
+class="title-slide slide level1">
+<h1>Cloud computing: usage revolution</h1>
+
+</section>
+<section id="a-technical-evolution" class="slide level2">
+<h2>A technical evolution</h2>
+<ul>
+<li>More Virtualization</li>
+<li>More API</li>
+<li>More Managed Services</li>
+</ul>
+</section>
+<section id="access-and-operating-computing-power" class="slide level2">
+<h2>Access and operating computing power</h2>
+<ul>
+<li>Outsourcing infra, maintenance, security, development of new
+services
+<ul>
+<li>Less (?) operation cost (or at least less burden)</li>
+</ul></li>
+<li>Pay-per-use, pay as you go, change of economical model</li>
+<li>“Infinitely scalable” for common folks</li>
+<li>“No need to plan out” infrastructure
+<ul>
+<li>Enabling innovation</li>
+<li>Power in the hands of developpers/builders</li>
+</ul></li>
+</ul>
+</section>
+<section id="technical-benefits" class="slide level2">
+<h2>Technical benefits</h2>
+<ul>
+<li>Infrastructure as Code</li>
+<li>Continuous Deployment</li>
+<li>Infinite resources</li>
+<li>On demand scalability and resources</li>
+</ul>
+</section>
+<section id="changing-the-way-we-interact-with-hardware"
+class="slide level2">
+<h2>Changing the way we interact with hardware</h2>
+<p>We interact with cloud providers using APIs…</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gcloud</span> compute <span class="at">--project</span><span class="op">=</span>deeplearningsps instances create <span class="va">${INSTANCE_NAME}</span> <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">--zone</span><span class="op">=</span><span class="va">${ZONE}</span> <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--machine-type</span><span class="op">=</span>n1-standard-8 <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">--scopes</span><span class="op">=</span>default,storage-rw,compute-rw <span class="dt">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--maintenance-policy</span><span class="op">=</span>TERMINATE <span class="dt">\</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--image-family</span><span class="op">=</span>ubuntu-1804-lts <span class="dt">\</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--image-project</span><span class="op">=</span>ubuntu-os-cloud <span class="dt">\</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">--boot-disk-size</span><span class="op">=</span>200GB <span class="dt">\</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">--boot-disk-type</span><span class="op">=</span>pd-standard <span class="dt">\</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">--accelerator</span><span class="op">=</span>type=nvidia-tesla-p100,count=1 <span class="dt">\</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">--metadata-from-file</span> startup-script=startup_script.sh</span></code></pre></div>
+</section>
+<section id="infrastructure-as-code" class="slide level2">
+<h2>Infrastructure as Code</h2>
+<ul>
+<li>Infrastructure is now managed via text files</li>
+<li>Data is securely stored on storage</li>
+<li>So we store code + urls on git… and everything is reproducible !
+(not <em>that</em> simple)</li>
+<li>We use automated deployment tools (terraform, gcp deployment
+manager…)</li>
+</ul>
+</section>
+<section id="pet-vs-cattle" class="slide level2">
+<h2>Pet vs Cattle</h2>
+<p><img
+data-src="https://blog.octo.com/wp-content/uploads/2016/12/image01-e1482225268205-1024x827.png" />
+<img
+data-src="https://blog.octo.com/wp-content/uploads/2019/07/pet_vs-cattle-1024x636.png" /></p>
+</section>
+<section id="quizz-3" class="slide level2">
+<h2>Quizz</h2>
+<p>Why Cloud computing is a usage revolution (multiple choices)?</p>
+<ul>
+<li>Answer A: Infinite resources (CPU, memory, storage)</li>
+<li>Answer B: It’s cheaper</li>
+<li>Answer C: Infrastructure managed as Code</li>
+<li>Answer D: Pay per use</li>
+<li>Answer E: It gives all our data to Google and Amazon</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_959">Answer link</a>
+<em>Key: sm</em></p>
+</section></section>
+<section>
+<section id="new-data-processing-standard"
+class="title-slide slide level1">
+<h1>New Data Processing standard</h1>
+
+</section>
+<section id="object-store" class="slide level2">
+<h2>Object store</h2>
+<p>High througput storage system with horizontal scalability</p>
+<p><img data-src="images/FileStorage.png" /> <img
+data-src="images/ObjectStorage.png" /></p>
+</section>
+<section id="compute-as-a-service" class="slide level2">
+<h2>Compute as a service</h2>
+<ul>
+<li>Start and stop compute resources when needed
+<ul>
+<li>IaC tools like Terraform, Ansible</li>
+<li>Mesos/Nomad and other tools.</li>
+</ul></li>
+<li>Kubernetes as a Service
+<ul>
+<li>With autoscaling features: add VMs if needed</li>
+<li>Dask, Spark and other processing tools plugged in</li>
+</ul></li>
+<li>Function as a Service
+<ul>
+<li>Just put a bit of code, everything else is handled.</li>
+</ul></li>
+<li>HPC as a Service
+<ul>
+<li>With POSIX filesystem (sometimes over Object store)</li>
+<li>And high performance network.</li>
+</ul></li>
+</ul>
+</section>
+<section id="hpc-as-a-service" class="slide level2">
+<h2>HPC as a Service</h2>
+<p>AWS ParallelCluster</p>
+<p><img
+data-src="https://d2908q01vomqb2.cloudfront.net/f1f836cb4ea6efb2a0b1b99f41ad8b103eff4b59/2019/11/06/parallelcluster-1.gif" /></p>
+</section></section>
+<section>
+<section id="discussions-and-troll" class="title-slide slide level1">
+<h1>Discussions and Troll</h1>
+
+</section>
+<section id="is-using-cloud-computing-less-expensive"
+class="slide level2">
+<h2>Is using cloud computing less expensive?</h2>
+<ul>
+<li><img data-src="images/thumbsup.svg" height="20" alt="+1" /> Depend
+on your {normal / peak} utilization</li>
+<li><img data-src="images/thumbsup.svg" height="20" alt="+1" /> Access
+to latest hardware without investment</li>
+<li><img data-src="images/thumbsdown.svg" height="20" alt="-1" /> Fully
+utilized hardware is more expensive on the cloud</li>
+<li><img data-src="images/thumbsdown.svg" height="20" alt="-1" /> CLOUD
+HYGIENE !
+<ul>
+<li>Watch for unused services / storage</li>
+<li>Shutdown machines when not used</li>
+<li>Services stack up…</li>
+</ul></li>
+</ul>
+</section>
+<section id="is-using-cloud-computing-more-secure-safer."
+class="slide level2">
+<h2>Is using cloud computing more secure / safer.</h2>
+<ul>
+<li><img data-src="images/thumbsup.svg" height="20" alt="+1" /> The best
+engineers in the world working on it</li>
+<li><img data-src="images/thumbsup.svg" height="20" alt="+1" /> Secure
+regions / private cloud…</li>
+<li><img data-src="images/thumbsdown.svg" height="20" alt="-1" /> Your
+data somewhere in some datacenter…</li>
+<li><img data-src="images/thumbsdown.svg" height="20" alt="-1" />
+“Dependency” towards your cloud provider…</li>
+<li><img data-src="images/thumbsdown.svg" height="20" alt="-1" /> Still
+need to handle security inside you resources</li>
+</ul>
+<figure>
+<img
+data-src="https://cdn.searchenginejournal.com/wp-content/uploads/2021/03/fire-ovh-data-center-60488d3b150d6-760x400.jpg"
+alt="OVHCloud burning" />
+<figcaption aria-hidden="true">OVHCloud burning</figcaption>
+</figure>
+</section></section>
+<section>
+<section id="google-cloud-platform" class="title-slide slide level1">
+<h1>Google Cloud Platform</h1>
+
+</section>
+<section id="presentation" class="slide level2">
+<h2>Presentation</h2>
+<ul>
+<li>One of the main cloud provider</li>
+<li>Behind AWS in SaaS (serverless…)</li>
+<li>More “readable” product line (for a Cloud Provider…)</li>
+<li>Very good “virtual machine” management
+<ul>
+<li>per second billing</li>
+<li>fine-grained resource allocation</li>
+</ul></li>
+</ul>
+</section>
+<section id="services" class="slide level2">
+<h2>Services</h2>
+<p><img
+data-src="https://static.packt-cdn.com/products/9781788837675/graphics/ee72c164-888d-4cec-b3f9-efd3b8e8e4cb.png" /></p>
+</section>
+<section id="section-1" class="slide level2"
+data-background-image="https://raw.githubusercontent.com/gregsramblings/google-cloud-4-words/master/Poster-medres.png">
+<h2
+data-background-image="https://raw.githubusercontent.com/gregsramblings/google-cloud-4-words/master/Poster-medres.png"></h2>
+</section>
+<section id="concepts-zones-and-regions" class="slide level2">
+<h2>Concepts: Zones and regions</h2>
+<p><img
+data-src="https://cloud.google.com/docs/images/overview/regions-zones.svg" /></p>
+</section>
+<section id="concepts-projects" class="slide level2">
+<h2>Concepts: Projects</h2>
+<p><img
+data-src="https://cloud.google.com/docs/images/overview/console-ids.png" /></p>
+<ul>
+<li>Access (Enabling API/Services)</li>
+<li>Ressources (Quota by project)</li>
+<li>Networking</li>
+<li>Billing</li>
+</ul>
+</section>
+<section id="concepts-identity-and-access-management-iam"
+class="slide level2">
+<h2>Concepts: Identity and Access Management (IAM)</h2>
+<figure>
+<img data-src="https://miro.medium.com/max/638/0*kGyUfNWZCk78hmPU."
+alt="IAM" />
+<figcaption aria-hidden="true">IAM</figcaption>
+</figure>
+</section>
+<section id="interacting-with-gcp-the-console" class="slide level2">
+<h2>Interacting with GCP: The Console</h2>
+<figure>
+<img
+data-src="https://cloud.google.com/docs/images/overview/console.png"
+style="width:60.0%" alt="https://console.cloud.google.com" />
+<figcaption
+aria-hidden="true">https://console.cloud.google.com</figcaption>
+</figure>
+</section>
+<section id="interacting-with-gcp-sdk-cloud-shell" class="slide level2">
+<h2>Interacting with GCP: SDK &amp; Cloud Shell</h2>
+<ul>
+<li>Using the gcloud CLI: <a
+href="https://cloud.google.com/sdk/install">https://cloud.google.com/sdk/install</a></li>
+<li>Using Google Cloud Shell: A small VM instance you can connect to
+with your browser</li>
+</ul>
+</section></section>
+<section>
+<section id="first-interaction-with-google-cloud-exercise"
+class="title-slide slide level1">
+<h1>First interaction with Google Cloud (Exercise)</h1>
+
+</section>
+<section id="objectives" class="slide level2">
+<h2>Objectives</h2>
+<p>Everyone has its credits/coupons?</p>
+<ul>
+<li>Create your GCP account, configure your credentials, ensure
+everything is working</li>
+<li>With the coupons you got, you should see $50 of credits (in the
+billing tab)</li>
+<li>Interact with Google cloud console: check all the services</li>
+<li>Start a first VM instance through the console, watch prices and all
+the options</li>
+<li>Create a Google Storage bucket and upload content</li>
+<li>Connect to google cloud shell and interact with it</li>
+<li>Follow <a
+href="https://codelabs.developers.google.com/codelabs/cloud-compute-engine#2">this
+Google codelabs</a> to deploy a Website!</li>
+</ul>
+<p>We’ll do more this afternoon!</p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+       // Parallax background image
+       parallaxBackgroundImage: 'images/background-logo.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1800,
+
+        height: 900,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.1,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

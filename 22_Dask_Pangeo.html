@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Guillaume Eynard-Bontemps, CNES (Centre National d’Etudes Spatiales - French Space Agency)">
+  <meta name="dcterms.date" content="2020-11-17">
+  <title>Dask presentation and tutorials</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/solarized.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Dask presentation and tutorials</h1>
+  <p class="author">Guillaume Eynard-Bontemps, CNES (Centre National
+d’Etudes Spatiales - French Space Agency)</p>
+  <p class="date">2020-11-17</p>
+</section>
+
+<section id="dask-presentation" class="slide level1">
+<h1>Dask Presentation</h1>
+<figure>
+<img data-src="images/Dask-Logo-lockup-primary.png" height="100"
+alt="Dask logo" />
+<figcaption aria-hidden="true">Dask logo</figcaption>
+</figure>
+<p><a
+href="https://docs.google.com/presentation/d/e/2PACX-1vSTH2kAR0DCR0nw8pFBe5kuYbOk3inZ9cQfZbzOIRjyzQoVaOoMfI2JONGBz-qsvG_P6g050ddHxSXT/pub?start=false&amp;loop=false&amp;delayms=60000#slide=id.p">Just
+use the Dask slidedeck</a></p>
+</section>
+<section id="quizz" class="slide level1">
+<h1>Quizz</h1>
+<p>What produces all dask API in the end?</p>
+<ul>
+<li>Answer A: Processes</li>
+<li>Answer B: Tasks</li>
+<li>Answer C: Tasks and associated graphs</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_222">Answer link</a>
+<em>Key: jd</em></p>
+</section>
+<section id="dask-tutorial" class="slide level1">
+<h1>Dask Tutorial</h1>
+<p><a href="https://github.com/dask/dask-tutorial">Just use the Dask
+tutorial</a></p>
+<p>Try to follow by order of importance:</p>
+<ul>
+<li>Dask Dataframes</li>
+<li>Distributed</li>
+<li>Parallel and Distributed Machine Learning</li>
+<li>Next, if you have more time
+<ul>
+<li>Array</li>
+<li>Bag (this should remind RDDs of Spark)</li>
+</ul></li>
+</ul>
+</section>
+<section
+id="pangeo-tutorial-or-finish-deploying-your-computing-platform"
+class="slide level1">
+<h1>Pangeo tutorial or finish deploying your computing platform</h1>
+<p><a href="https://gallery.pangeo.io/">Just try some use cases
+here</a></p>
+<p>or</p>
+<p><a
+href="https://github.com/SupaeroDataScience/OBD/blob/master/notebooks/Kubernetes_Daskhub.ipynb">Finish
+yesterday deployment</a> (needed for tomorrow).</p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+       // Parallax background image
+       parallaxBackgroundImage: 'images/background-logo.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1800,
+
+        height: 900,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.1,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

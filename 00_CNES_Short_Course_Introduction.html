@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Guillaume Eynard-Bontemps, CNES (Centre National d’Etudes Spatiales - French Space Agency)">
+  <meta name="dcterms.date" content="2022-04-08">
+  <title>CNES Big Data Processing &amp; Distribution Course</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/solarized.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">CNES Big Data Processing &amp; Distribution
+Course</h1>
+  <p class="author">Guillaume Eynard-Bontemps, CNES (Centre National
+d’Etudes Spatiales - French Space Agency)</p>
+  <p class="date">2022-04-08</p>
+</section>
+
+<section>
+<section id="welcome" class="title-slide slide level1">
+<h1>Welcome</h1>
+
+</section>
+<section id="course-overview" class="slide level2">
+<h2>Course Overview</h2>
+<ul>
+<li>Big Data Processing &amp; Distribution</li>
+</ul>
+<p>Harnessing the complexity of large amounts of data is a challenge in
+itself.</p>
+<p>But Big Data processing is more than that: originally characterized
+by the 3 Vs of Volume, Velocity and Variety, the concepts popularized by
+Hadoop and Google require dedicated computing and storage solutions
+(both software and infrastructure), which will be explored in this
+module.</p>
+</section>
+<section id="objectives" class="slide level2">
+<h2>Objectives</h2>
+<p>By the end of this module, participants will be able to:</p>
+<ul>
+<li>Understand the differences and usage between main distributed
+computing architectures (HPC, Big Data, Cloud, CPU vs GPGPU)</li>
+<li>Implement the distribution of simple operations via the Map/Reduce
+principle in PySpark</li>
+<li>Understand the principle of Kubernetes and object storage</li>
+<li>Deploy a Big Data Processing Platform (Pangeo) on the Cloud</li>
+<li>Either implement the distribution of data wrangling/cleaning and
+training machine learning algorithms using Dask</li>
+<li>Or implement a NDVI processing at scale using Pangeo platform.</li>
+</ul>
+</section>
+<section id="about-myself" class="slide level2"
+data-background-image="images/HPC-blue.jpg" style="color:white">
+<h2 data-background-image="images/HPC-blue.jpg"
+style="color:white">About myself</h2>
+<ul>
+<li>Guillaume Eynard-Bontemps</li>
+<li>CNES (Centre National d’Etudes Spatiales - French Space Agency)</li>
+<li>Since 2016:
+<ul>
+<li>6 years in CNES Computing Center team</li>
+<li>Technical lead of the team</li>
+<li>3 years of using Dask/Python on HPC and in the Cloud</li>
+<li>A bit of Kubernetes and Google Cloud</li>
+</ul></li>
+<li>Before that: 5 years on Hadoop and Spark</li>
+<li>Originally: Software developer (a lot of Java)</li>
+</ul>
+</section>
+<section id="first-quizz" class="slide level2">
+<h2>First quizz</h2>
+<p>I’ll try to propose some quizz to be sure you’re following!</p>
+<p>Let’s try it.</p>
+<p>What is this course module main subject?</p>
+<ul>
+<li>Answer A: Cloud computing</li>
+<li>Answer B: Data Distribution &amp; Processing</li>
+<li>Answer C: Machine Learning</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_575">Answer link</a>
+<em>Key: nf</em></p>
+</section></section>
+<section>
+<section id="program" class="title-slide slide level1">
+<h1>Program</h1>
+
+</section>
+<section id="big-data-distributed-computing-3.5h" class="slide level2">
+<h2>Big Data &amp; Distributed Computing (3.5h)</h2>
+<ul>
+<li><a href="01_Introduction_Big_Data.html">Introduction to Big Data and
+its ecosystem (45min)</a>
+<ul>
+<li>What is Big Data?</li>
+<li>Legacy “Big Data” ecosystem</li>
+<li>Big Data use cases</li>
+<li>Big Data to Machine Learning</li>
+</ul></li>
+<li><a href="02_Big_Data_Platforms.html">Big Data platforms, Hadoop, HPC
+&amp; Beyond (1h45min)</a>
+<ul>
+<li>Hadoop, HDFS and MapReduce</li>
+<li>Datalakes, Data Pipelines</li>
+<li>HPC Platforms Architecture</li>
+<li>From HPC to Big Data to Cloud and High Performance Data
+Analytics</li>
+<li>BI vs Big Data</li>
+<li>Hadoop legacy: Spark, Dask, Object Storage …</li>
+</ul></li>
+<li><a href="03_Spark_Introduction.html">Spark</a>
+<ul>
+<li>Spark Introduction (30min)</li>
+<li>Exercise: Play with MapReudce through Spark (30min)</li>
+</ul></li>
+</ul>
+</section>
+<section id="cloud-kubernetes-object-stores-3.5h" class="slide level2">
+<h2>Cloud, Kubernetes &amp; Object stores (3.5h)</h2>
+<ul>
+<li><a href="10_Cloud_Computing.html">The Cloud in 30 minutes
+(30min)</a>
+<ul>
+<li>What’s the Cloud, Virtualization</li>
+<li>Cloud history, layers, Engines</li>
+<li>Usage revolution and new Data processing standard</li>
+</ul></li>
+<li><a href="12_OrchestrationKubernetes.html">Containers Orchestration
+(1h)</a>
+<ul>
+<li>Container orchestration and Kubernetes</li>
+<li>Processing Platform over Kubernetes (Databricks, Coiled)</li>
+</ul></li>
+<li><a href="14_ObjectStorage.html">Object storage (30min)</a>
+<ul>
+<li>Object storage concepts: POSIX vs Object</li>
+<li>Object storage architecture</li>
+<li>Processing tools interfaces, Cloud Optimized files</li>
+</ul></li>
+<li><a href="13_Dask_On_Cloud.html">Deploy a Data processing platform on
+the Cloud based on Kubernetes and Dask (1.5h)</a>
+<ul>
+<li>Exercise: DaskHub or Dask Kubernetes or Pangeo</li>
+</ul></li>
+</ul>
+</section>
+<section
+id="python-ecosystem-for-data-processing-and-dask-at-scale-3.5h"
+class="slide level2">
+<h2>Python ecosystem for data processing and Dask at scale (3.5h)</h2>
+<ul>
+<li><a href="21_Python_Data_Processing.html">The rise of the Python
+ecosystem for Data Processing (1h)</a>
+<ul>
+<li>Data Science programming languages</li>
+<li>Pydata stack (Pandas, Numpy, Matlplotlib, Jupyter)</li>
+<li>Distributed and sctientific processing (Dask, PySpark)</li>
+<li>Data vizualisation (Seaborn, Plotly, Pyviz)</li>
+<li>Machine and Deep Learning (Sickit Learn, TensorFlow, Pytorch)</li>
+<li>Jupyter notebooks, Binder, Google Colab</li>
+</ul></li>
+<li><a href="22_Dask_Pangeo.html">Dask Presentation (30min)</a></li>
+<li>Dask/Pangeo practice:
+<ul>
+<li>Either play with Pangeo notebooks (<a
+href="https://gallery.pangeo.io/">in the cloud</a> or <a
+href="https://gitlab.cnes.fr/inno/pangeo-jupyter-demo">on HAL
+cluster</a></li>
+<li><a href="30_Evaluation.html">Or try to answer Supaero evaluation
+notebook!</a></li>
+</ul></li>
+</ul>
+</section>
+<section id="quizz" class="slide level2">
+<h2>Quizz</h2>
+<p>What will we do today (multiple choices)?</p>
+<ul>
+<li>Answer A: Explain what’s Big Data</li>
+<li>Answer B: See what’s Hadoop</li>
+<li>Answer C: Dig into Cloud computing</li>
+<li>Answer D: Take a nap</li>
+<li>Answer E: Some Spark</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAG4ElEQVR42u3d0ZLiIBAF0M2W///L7sNUTbkaIwa6afScp60dYzB6hYDAdr1e/wDz/HUJYK7Ly0ds2/b7b9UmDLc9pusndT//8+zf753j7IG73wWf90Uw5PrEFezO7Ydh90+crAm3bSt+Ba/X6+4bL2YJV/7EnzhzT3j8tbf0x6j+p9yFVROe/CI813ocfpN59/XR+Jy3Jfz9inn8rrn7n2eFf/wKe2y27X6RvXuh7or67jU892XaUkjfI7014UFDv6f19diGvP3TkDPePmH7cx6UsPGo2xPdleHuFvr307lb4z377B5fqJ/bh3ev4V2B248aWwyeNkeD7n8OapUhb96JttxBCd896lnhO1uYL8917hq++5Jvv1P+PPTPPfsT55ujP3VCwnUce4rkN/7ZnfPjpavZPNNorH5PmNMDOfBz8OwWLr/wj3d69Tuce24gddSVbo7u3i8d9FUMjM1brbKWEjYW/q1X0fLgZ/ecQy5Re1EPihFXwi+0vbxz68zDY5djZ2fmQdW3273ZU8L2wj/rHT0u//FRx72jJ96vc/3SB0f5NdWYELp2X/VFrsqqfk/IxxM/NSEQ3zEDCCEIISCEIISAEIIQAkIIQggIIQghIIQghIAQghACQghCCAghVJK0xkzBtZkPltM8fXjnBYl4zojCf/MnRE0ImqOAEIIQAkIIQgiMMnMZ/LQu4LkDD+0niuimnzsa0TkSU/AToiYEzVFACEEIASEEIQRGKbdTb2dncdrkhs5Hthe+80QR5WwvfMQYw9xPiJoQNEcBIQQhBIQQhBAY5eIS3Cq4fFNa4TtPtPQyU2pCEEJACEEIASEEIQTyGaL4T/sYQ3s/+9zFjtLWnkpbukpNCAghCCEghCCEgBDCZyg3RDH3J/Zpazp1jltETFmIWOQq4t38vEkYakIQQhBCQAhBCAEhhO80c4ii4E/s0/ai6HzkrojnTLueq3xC1IQghIAQghACQghCCIySNESx9C/fC+7g3f7IgrNSPu8ToiYEIQSEEIQQEEIQQuCE7cO6htNWQGq39GYS7UUqONckbf6KmhA0RwEhBCEEhBCEEDghaYgioqO8/UQRvdJzlzCau7V1Wi9/xEJPBcfk1IQghCCEgBCCEAJCCN+p3HbZq/yafunBjM5HRuwfvsr2GGpC0BwFhBCEEBBCEEJglJl7UaRthpy2I8IqKwulvaLOD0PBSRhqQtAcBYQQhBAQQhBCYJRysygipkGknX3X3P2u0y5dZ5EiDk+b6aImBM1RQAhBCAEhBCEETpg5RFFwi+OI51xlMCPtLW5/RRHjKwWnVqgJQQhBCAEhBCEEhBC+U9IQRcQv3yOWG5o7vaDgRW6XtrdHxCuyFwVojgJCCEIICCEIIZBv5l4Uu9J2h47YO6Fd2oSJtOsZcXjE4FDBrUHUhKA5CkIICCEIISCE8J22gqsD7ZRy6lbMaYcv3SOfNodj7mQRNSFojgJCCEIICCEIITBKuSGKpTug02Y8RCxyVXAcaJXCqwlBcxQQQhBCQAhBCIETFt6LouDG2hEillpKm9jRuRfFKruAqAlBCAEhBCEEhBCEEDghaRbF0j9yn7sbROdVijhRxPv+ea9dTQiao4AQghACQghCCBybuV122rhFxJbRqxQ+QufciLSztx+uJgTNUUAIQQgBIQQhBPLNnEUR0fWfVvj2In3eMlOrzI2wXTYghCCEgBCCEAJCCJVdlijl3LkREbtBtJs7XWPu+ErBSRhqQtAcBYQQhBAQQhBCYJTLN7zIuVMW0kY4lt6PYZW3Q00ImqOAEIIQAkIIQgiMMnOIIm31p4KHLz0RobNIEYfPfe1qQtAcBYQQhBAQQhBC4ISZ22UXPHzuKkAR21AXXNdo7qSWgqM7akLQHAUhBIQQhBAQQvhOSUMUads7t2vv+i84btH+itqfc+5r7zzR3DEwNSFojgJCCEIICCEIIXDCzIWeCvbyR6w9VfCCFByJ+byVr9SEoDkKCCEIISCEIITAsXLbZRfcm3qVOQedh3e+ovbD547uWOgJEEIQQkAIQQgBIYQiLi7BSwXHLSKK1HmiueXcNXdOjJoQNEcBIQQhBIQQhBA4ZojitYie7rThhM6XGXGizh0m0sZX1ISgOQoIIQghIIQghECockMUBbcKSHuZneMWaQsodc4LiSinvSgAIQQhBIQQhBAQQljOltNjW/Cn62ld6qvsWjF3zkHn25F2uJoQNEcBIQQhBIQQhBAYZfuSWQugJgSEEIQQEEIQQkAIQQgBIQQhBIQQhBAQQhBCEEJACEEIASEEIQSEEIQQEEIQQkAIQQgBIQQhBIQQhBAQQhBCQAhBCAEhBCEEQvwDS6nHO0ntsmMAAAAASUVORK5CYII="
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_55">Answer link</a>
+<em>Key: dy</em></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+       // Parallax background image
+       parallaxBackgroundImage: 'images/background-logo.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1800,
+
+        height: 900,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.1,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

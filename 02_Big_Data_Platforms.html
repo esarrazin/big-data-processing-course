@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Guillaume Eynard-Bontemps, CNES (Centre National d’Etudes Spatiales - French Space Agency)">
+  <meta name="dcterms.date" content="2020-11-15">
+  <title>Big Data Platforms, Hadoop and beyond</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/solarized.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Big Data Platforms, Hadoop and beyond</h1>
+  <p class="author">Guillaume Eynard-Bontemps, CNES (Centre National
+d’Etudes Spatiales - French Space Agency)</p>
+  <p class="date">2020-11-15</p>
+</section>
+
+<section>
+<section id="hadoop" class="title-slide slide level1">
+<h1>Hadoop</h1>
+
+</section>
+<section id="introduction" class="slide level2">
+<h2>Introduction</h2>
+<p>What is Hadoop?</p>
+<p>Open source framework supported by Apache foundation:</p>
+<ul>
+<li>Store and process massive amount of data</li>
+<li>In a distributed way</li>
+<li>On “commodity” hardware (i.e. not expensive)</li>
+<li>Fault tolerant</li>
+</ul>
+</section>
+<section id="a-complex-ecosystem" class="slide level2">
+<h2>A complex ecosystem</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<figure>
+<img
+data-src="https://d1jnx9ba8s6j9r.cloudfront.net/blog/wp-content/uploads/2016/10/HADOOP-ECOSYSTEM-Edureka.png"
+style="width:80.0%" alt="Hadoop ecosystem" />
+<figcaption aria-hidden="true">Hadoop ecosystem</figcaption>
+</figure>
+</div><div class="column" style="width:50%;">
+<p>Numerous Apache Software Foundation projects:</p>
+<ul>
+<li>Each covering a specific functionnality</li>
+<li>With their own developer community</li>
+<li>And their own development cycle</li>
+</ul>
+<p>Hadoop distributions!</p>
+<ul>
+<li>Cloudera/Horthonworks (2018 fusion)</li>
+<li>MapR</li>
+<li>Others smaller</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="hdfs-and-mapreduce-principles" class="slide level2">
+<h2>HDFS and MapReduce principles</h2>
+<h3 id="two-main-components-of-hadoop">Two main components of
+Hadoop</h3>
+<ul>
+<li>Distributed Software Defined Storage: HDFS (Hadoop Distributed File
+System) <img
+data-src="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/images/hdfs-logo.jpg"
+height="50" /></li>
+<li>Distributed Data Processing: MapReduce <img
+data-src="https://www.pikpng.com/pngl/m/533-5331939_hadoop-apache-org-hadoop-map-reduce-logo-png.png"
+height="50" /></li>
+</ul>
+<h3 id="principles">Principles</h3>
+<ul>
+<li>Split and store data on a cluster of servers (with local
+storage)</li>
+<li>Process data localy (on the server which owns it)</li>
+<li>Horizontal scalability: add or remove machines, on the fly, for
+compute or storage</li>
+<li>Fault tolerant</li>
+</ul>
+</section>
+<section id="hadoop-cluster-components" class="slide level2"
+data-background-image="https://pbs.twimg.com/media/EKzU0wMWsAAkKLc.jpg"
+data-background-opacity="0.2">
+<h2
+data-background-image="https://pbs.twimg.com/media/EKzU0wMWsAAkKLc.jpg"
+data-background-opacity="0.2">Hadoop cluster components</h2>
+<ul>
+<li>CLuster of “commodity” servers</li>
+<li><strong>Shared Nothing</strong> architecture: only shared component
+is <em>standard</em> network</li>
+<li>Each machine is a node which own both storage and compute</li>
+</ul>
+<p>Each cluster is composed of:</p>
+<ul>
+<li>Master nodes: handle metadata and knowledge of the whole
+infrastructure</li>
+<li>Worker nodes:
+<ul>
+<li>Host distributed pieces of data</li>
+<li>Execute data processing algorithm parts</li>
+</ul></li>
+</ul>
+</section>
+<section id="hadoop-story-from-google-to-spark" class="slide level2">
+<h2>Hadoop story, from google to Spark</h2>
+<figure>
+<img data-src="images/Hadoop_Final.jpg" style="height:40.0%"
+alt="Hadoop history" />
+<figcaption aria-hidden="true">Hadoop history</figcaption>
+</figure>
+<p>Spark first version in 2014.</p>
+</section>
+<section id="quizz" class="slide level2">
+<h2>Quizz</h2>
+<p>What are the <strong>two</strong> building blocks of Hadoop ecosystem
+(multiple choices)?</p>
+<ul>
+<li>Answer A: Oozie</li>
+<li>Answer B: HDFS</li>
+<li>Answer C: Map Reduce</li>
+<li>Answer D: Servers</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAHAklEQVR42u3d3Y6bMBAG0FLl/V95e7FqFIWfmJiZMXDOVVVtguPwYWPHePr5+fkD1PmrCqDW4+NfTNP0/LdmEw43zdP1m7rf/1n7975jfPvCxWvB9S4Eh9RPdPHeKv/1Pxev0a7du7uji3U6lFN/kdM0jV/D2xeI1wvx65fyqvFVrN4TblzbnueQS1rQ9WXMin370hsTtfgquu4Jv6vEjd7j4R2V+eV5bwmf5838WvP2P2uFn5+a81N28UK2t6Leirq3DnddTFv+rKUYctjUEh7bbXjtjby95+Edldc3bH/PjRJ+0Td7K8PbLfRrmzA/HddO0O2Kmqbpizp8K3D/vet2Mab/xKy1Oxrah+np3hzel/uuv7Sr8J09zI/H+q4Oe7qI8yK9XV/mzb57wt3d0d82IaG+jj1E8he8duc8r7ox+2A9Nxe7Xvuaz9/K0Sltuifc1TdLPg/aO0glhZ/f6V3mtNu4lZWrQbuji/dLG52WA2Ozq1fWUsLGwu/6FC1/vHbPeUgV7arwtUNvlDCu8Fc1fbxz68zDfMixczDzz+akcHvhW0rYXvi10dHt8m+/ant09Ivva++49MYd78c3NFm/Iywq6FZXa+3S6PeEXJ74aQmB+IEZQAhBCAEhBCEEhBCEEBBCEEJACEEIASEEIQSEEIQQEEIQQkAIYSRJz5gZ8BnMi8/1SCtn2lNF2j9Re5Fq37P2DNESgu4oIIQghIAQghACR6l8DP6Aw/S1hR+wnGv7Mea8/NRniJYQdEcBIQQhBIQQhBDYNtxOvZ2DxRGD2u3rLTr/MmJhR+ckQed7DjiRM+CuuFpCEEIQQkAIQQgBIYR7eqiCVxGzEe1OPT0TMReiJQSEEIQQEEIQQkAI4cJMUXzWOc5e+1yjzn0jOqdnzFtoCUEIASEEIQSEEIQQWDPcFEXt+HXa3gkRz4mqXe2R9sVdb4ZDSwhCCEIICCEIISCEcE+VUxS1exRHFL52jmHAGY6I3ba1hIAQghACQghCCAghXEPSFIVn+ySIWAKStj3Gnc8QLSEIIQghIIQghIAQwj1Now0NR4yJpz0B6SybSXQWPq0+I8pZ+21qCUF3FBBCEEJACEEIgaekVRRpP/CPGD1Pm3hYPFDtVErtM50iypk2laIlBN1RQAhBCAEhBCEEtiWtojjLb/lrl0G0q/2YaTWfNnNQu5ZISwi6oyCEgBCCEAJCCPdUuRdF7QB059EjBt87B8rTPmbtbMT1dtvWEoIQghACQghCCAgh3NOj8NhpP12PmA9o/0QRz0q63gTJgF+HlhB0RwEhBCEEhBCEEAh1i+2yOw90vV/9R8xbnOXltbMmWkLQHQWEEIQQEEIQQuCpcrvsTrX7SKdVyFm2neic9ohYwzHg964lBN1RQAhBCAEhBCEEnk68iiJi8L3zQGlPlDrLWpPOT5S2AMUUBeiOAkIIQggIIQghkG+4KYrlUpauOUh7ebvaA0V8R2kng5YQEEIQQkAIQQgBIYRBJE1RdG4VUDvWXDsmHrE+YMAVJGmrKAY867SEoDsKQggIIQghIIRwT5VTFO1qd5xOm3gYcPR8wBUkEUf3oCfQHQWEEIQQEEIQQiDfY7QCDbjxQ6f2gfKz7MeQVslpn90qCtAdBYQQhBAQQhBCIF/lXhS1I/LtIhY3RIyJn2Vr67OcNqYoQHcUEEIQQkAIQQiBUEmrKCIGtdNmDtqP3vnZPdOp5UCdVVf7QCotIeiOAkIIQggIIQgh8DTcg57SlhcM+LSitGmPtI+ZtmTh1M8H0xKC7igIISCEIISAEMI9PU5Rys7fyKcVqV3Ewo6Iv0yrkLT3HHC3Ei0hCCEIISCEIISAEMI9Pe7wISOeAtQ5x5A2w9FZIZ0vT5s1sRcFIIQghIAQghACQginMw34o/LK6ijdxbpdxFOVzrINddqeGaYoQHcUEEIQQkAIQQiBUJXbZdeK2Es5bQPwtGUQad9mZ5HStrLQEoLuKCCEIISAEIIQAkdJWkVRu0dx2tEjJjNqHwlV+9nTKqT2/NQSgu4oCCEghCCEgBDCPQ23F8WAmzR06hwT73x57WORIvbh6PzeB1zQoyUEIQQhBIQQhBAQQrinhyr4KG1v6gG3SWg/eufHjJhjiKh5LSHojgJCCEIICCEIIXAUUxSfDfj4prRy1hY+YllJRIVoCUF3FBBCEEJACEEIgS8MN0VxlvUBi9K2Sah9fFOtiFUUWkLQHQWEEIQQEEIQQiBf5RTFgLsCtEt7hFHaXhS1X1znzEFEJWsJQXcUEEIQQkAIQQiBUNOAPyoHLSEghCCEgBCCEAJCCEIICCEIISCEIISAEIIQAkIIQggIIQghIIQghIAQghACQghCCAghCCEghCCEgBCCEAJCCEIICCEIISCEcBr/ALxG4k7I5K8jAAAAAElFTkSuQmCC"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_256">Answer link</a>
+<em>Key: jo</em></p>
+</section>
+<section id="map-reduce-exercise" class="slide level2">
+<h2>Map Reduce exercise</h2>
+<p><a
+href="https://www.learnpython.org/en/Map%2C_Filter%2C_Reduce">Learning
+Python</a></p>
+</section></section>
+<section>
+<section id="hdfs" class="title-slide slide level1">
+<h1>HDFS</h1>
+
+</section>
+<section id="hdfs-basics" class="slide level2">
+<h2>HDFS Basics</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="distributed-file-system">Distributed File System</h3>
+<ul>
+<li>Written in <strong>Java</strong></li>
+<li>Allowing to <strong>store</strong> massive amounts of data,
+<ul>
+<li>structured or not,</li>
+<li>on a cluster of machines</li>
+</ul></li>
+<li>Extensible and portable</li>
+<li>One of the first <strong>Software Defined Storage</strong>
+<ul>
+<li>(OK, Google was here first)</li>
+</ul></li>
+<li>In HDFS, data are of <strong>writen-once</strong> type (no inline
+modifications)</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="data-blocks">Data blocks</h3>
+<ul>
+<li>Data is <strong>splitted</strong> and <strong>distributed</strong>
+<ul>
+<li>among the Hadoop cluster</li>
+</ul></li>
+<li>Splitted into 128MB (default) <strong>blocks</strong></li>
+<li>With a <strong>replication</strong> factor for preventing data loss
+<ul>
+<li>(3 replicas default)</li>
+</ul></li>
+<li>Hadoop 3: <strong>Erasure coding</strong>
+<ul>
+<li>similar or better durability as replication 3,</li>
+<li>but <strong>only 50%</strong> volume increase (can be less or
+more)</li>
+<li>instead of 200%</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="hdfs-blocks-repartition" class="slide level2">
+<h2>HDFS blocks repartition</h2>
+<p><img data-src="images/HDFSBlocks.png" /></p>
+</section>
+<section id="hdfs-daemons" class="slide level2">
+<h2>HDFS Daemons</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<h3 id="namenode">Namenode</h3>
+<ul>
+<li>Accountable for data locality and file system global namespace</li>
+<li>Daemon on a dedicated server</li>
+<li>Hosts metadata, create, remove, move files and folders</li>
+<li>Knows nodes wich own the parts of a file</li>
+<li>Needs to be replicated and secured (loss of metadata = loss of all
+data)</li>
+</ul>
+</div><div class="column" style="width:40%;">
+<h3 id="datanode">Datanode</h3>
+<ul>
+<li>Stores and loads data blocks</li>
+<li>Daemon on every worker nodes</li>
+<li>Reading and writing of data</li>
+<li>Creation and Deletion of blocks</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="hdfs-architecture" class="slide level2">
+<h2>HDFS Architecture</h2>
+<p><img
+data-src="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/images/hdfsarchitecture.png" /></p>
+</section>
+<section id="quizz-1" class="slide level2">
+<h2>Quizz</h2>
+<p>What means HDFS?</p>
+<ul>
+<li>Answer A: Hadoop Distributed Functional Services</li>
+<li>Answer B: Hadoop Delayed File System</li>
+<li>Answer C: Hadoop Distributed File System</li>
+<li>Answer D: Hadoop Delayed Functional Services</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_813">Answer link</a>
+<em>Key: me</em></p>
+</section></section>
+<section>
+<section id="map-reduce" class="title-slide slide level1">
+<h1>Map Reduce</h1>
+
+</section>
+<section id="map-reduce-basics" class="slide level2">
+<h2>Map Reduce Basics</h2>
+<ul>
+<li><strong>Functional</strong> language concept</li>
+<li>Heavily used by Google for <strong>WWW indexing</strong></li>
+<li><strong>Colocate</strong> data and processing (with Hadoop and
+alikes)</li>
+<li>Automatic process <strong>ditribution</strong> on pieces of data
+(eager distribution)</li>
+<li>Optimized for fast processing of <strong>huge datasets</strong></li>
+<li><strong>Fault tolerant</strong>:
+<ul>
+<li>Data is replicated,</li>
+<li>Individual tasks can be restarted anywhere</li>
+</ul></li>
+</ul>
+</section>
+<section id="wordcount-1.-storage" class="slide level2">
+<h2>Wordcount (1. storage)</h2>
+<p><img data-src="images/Wordcount1.png" style="background:white" /></p>
+</section>
+<section id="wordcount-2.-split" class="slide level2">
+<h2>Wordcount (2. split)</h2>
+<p><img data-src="images/Wordcount2.png" style="background:white" /></p>
+</section>
+<section id="wordcount-3.-map" class="slide level2">
+<h2>Wordcount (3. map)</h2>
+<p><img data-src="images/Wordcount3.png" style="background:white" /></p>
+</section>
+<section id="wordcount-4.-shuffle" class="slide level2">
+<h2>Wordcount (4. shuffle)</h2>
+<p><img data-src="images/Wordcount4.png" style="background:white" /></p>
+</section>
+<section id="wordcount-5.-reduce" class="slide level2">
+<h2>Wordcount (5. reduce)</h2>
+<p><img data-src="images/Wordcount5.png" style="background:white" /></p>
+</section>
+<section id="wordcount-6.-result" class="slide level2">
+<h2>Wordcount (6. result)</h2>
+<p><img data-src="images/Wordcount6.png" style="background:white" /></p>
+</section>
+<section id="yarn" class="slide level2">
+<h2>YaRN</h2>
+<ul>
+<li>Yet Another Resource Negociator…</li>
+<li>Introduced in Hadoop v2</li>
+<li>Separation between
+<ul>
+<li>Resources scheduling and cluster state</li>
+<li>Job execution and distribution</li>
+</ul></li>
+</ul>
+<p><img data-src="images/YARN.png" style="width:40.0%" /> <img
+data-src="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/yarn_architecture.gif"
+style="width:40.0%" /></p>
+</section>
+<section id="quizz-2" class="slide level2">
+<h2>Quizz</h2>
+<p>What is the magical hidden step of distributed Map Reduce?</p>
+<ul>
+<li>Answer A: Map</li>
+<li>Answer B: Reduce</li>
+<li>Answer C: Shuffle</li>
+<li>Answer D: Split</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_387">Answer link</a>
+<em>Key: rs</em></p>
+</section></section>
+<section>
+<section id="datalakes" class="title-slide slide level1">
+<h1>Datalakes</h1>
+
+</section>
+<section id="toward-a-new-data-management-model" class="slide level2">
+<h2>Toward a new data management model</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="process-centric">Process centric</h3>
+<ul>
+<li>Structured Data</li>
+<li>Internal sources</li>
+<li>Important data only</li>
+<li>Multiple copies</li>
+</ul>
+<p><img data-src="images/ProcessCentric.png" style="height:30.0%" /></p>
+</div><div class="column" style="width:50%;">
+<h3 id="data-centric">Data centric</h3>
+<ul>
+<li>Multiple types (structured, semi-structured, unstructured)</li>
+<li>Multiple sources (internal, external)</li>
+<li>Everything</li>
+<li>One copy</li>
+</ul>
+<p><img data-src="images/DataCentric.png" style="height:30.0%" /></p>
+</div>
+</div>
+</section>
+<section id="host-and-process-different-kind-of-data"
+class="slide level2">
+<h2>Host and process different kind of data</h2>
+<p><img data-src="images/Datalake1.png" style="width:60.0%" /></p>
+</section>
+<section id="typical-architecture" class="slide level2">
+<h2>Typical Architecture</h2>
+<figure>
+<img
+data-src="https://www.oreilly.com/library/view/architecting-data-lakes/9781492042518/assets/ardl_0201.png"
+style="width:80.0%" alt="Oreilly’s Datalake" />
+<figcaption aria-hidden="true">Oreilly’s Datalake</figcaption>
+</figure>
+</section>
+<section id="cnes-datalake-infrastructure-example" class="slide level2">
+<h2>CNES Datalake infrastructure example</h2>
+<p><img data-src="images/CNESDatalake.png" style="width:50.0%" /></p>
+</section>
+<section id="quizz-3" class="slide level2">
+<h2>Quizz</h2>
+<p>What is the goal of a Datalake?</p>
+<ul>
+<li>Answer A: Host structured and filtered Data</li>
+<li>Answer B: Host any kind of Data, at any stages of processing</li>
+<li>Answer C: Standardizing Data structure</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_729">Answer link</a>
+<em>Key: tw</em></p>
+</section></section>
+<section>
+<section id="data-pipelines-and-associated-tools"
+class="title-slide slide level1">
+<h1>Data pipelines and associated tools</h1>
+
+</section>
+<section id="data-manipulation-is-complex" class="slide level2">
+<h2>Data manipulation is complex</h2>
+<p>You won’t usually achieve what you want with a single MapReduce or
+Spark job.</p>
+<p>Let’s say you want to train a ML model every time a text file is
+updated on a website and evaluate it next.</p>
+<p>You’ll need to:</p>
+<div>
+<ul>
+<li class="fragment">Periodically poll the website for new data</li>
+<li class="fragment">Launch your model training when new text file is
+availaible</li>
+<li class="fragment">Evaluate your new model on a reference dataset</li>
+<li class="fragment">Push the evaluation result somewhere you can see
+it</li>
+</ul>
+</div>
+</section>
+<section id="processing-pipelines" class="slide level2">
+<h2>Processing pipelines</h2>
+<p>This is called a Pipeline or a workflow.</p>
+<p>It mainly means chaining tasks or jobs together to automatically
+produce a result from an input.</p>
+<p>Tasks are typically either:</p>
+<ul>
+<li>Triggered based on a date, periodicity (like Linux crontab for those
+who knows).</li>
+<li>Triggered by an external event: data availability.</li>
+<li>Triggered by the end of the previous task or tasks.</li>
+</ul>
+<p>It is usually represented by Direct Acyclic Graphs (DAGs).</p>
+</section>
+<section id="example-in-satellite-ground-segment" class="slide level2">
+<h2>Example in Satellite ground segment</h2>
+<figure>
+<img data-src="images/Iota2Pipeline.png" alt="Iota2 Pipeline" />
+<figcaption aria-hidden="true">Iota2 Pipeline</figcaption>
+</figure>
+</section>
+<section id="some-tools" class="slide level2">
+<h2>Some tools</h2>
+<figure>
+<img
+data-src="https://airflow.apache.org/docs/apache-airflow/stable/_images/airflow.gif"
+alt="Airflow" />
+<figcaption aria-hidden="true">Airflow</figcaption>
+</figure>
+<p>Plenty others from Apache or in Python ecosystem.</p>
+</section></section>
+<section>
+<section id="hpc-platforms" class="title-slide slide level1">
+<h1>HPC Platforms</h1>
+
+</section>
+<section id="overview-and-use-cases" class="slide level2">
+<h2>Overview and Use cases</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<blockquote>
+<p>HPC = High Performance Computing</p>
+</blockquote>
+<ul>
+<li>HPC were built to solve compute bound problems</li>
+<li>Some early fields of research:
+<ul>
+<li>Weather forecasting</li>
+<li>Atmospheric and climate research</li>
+<li>Rockets and Aeronautics design</li>
+<li>Computational Fluid Dynamics in general</li>
+</ul></li>
+<li>High performance infrastructure: compute, CPU, storage, Network</li>
+</ul>
+</div><div class="column" style="width:60%;">
+<iframe src="https://player.vimeo.com/video/300943265?h=ef84e12ec0" width="640" height="362" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+</iframe>
+<p>
+<a href="https://vimeo.com/300943265">Current speed in eNATL60
+simulation with explicit tidal motion.</a> from
+<a href="https://vimeo.com/oceannumerique">Océan Numérique</a> on
+<a href="https://vimeo.com">Vimeo</a>.
+</p>
+<ul>
+<li>number of processors in parallel required: 18000</li>
+<li>Model time step: 40s</li>
+<li>Model integration speed: 45 minutes for 1 model day</li>
+<li>40 million cpu-hour allocation</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="cnes-typical-use-cases-1" class="slide level2">
+<h2>CNES typical use cases (1)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="rd-studies-upstream-research">R&amp;D, Studies, upstream
+research</h3>
+<ul>
+<li>Launchers (combustion, structure)</li>
+<li>Flight dynamics, orbitography</li>
+<li>Sensor data simulation</li>
+<li>Satellite structure and materials</li>
+<li>Technical domain: MPI, HTC, Big Data, AI</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<figure>
+<img data-src="images/HPCUpstream.png" alt="HPC Upstream" />
+<figcaption aria-hidden="true">HPC Upstream</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="cnes-typical-use-cases-2" class="slide level2">
+<h2>CNES typical use cases (2)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<figure>
+<img data-src="images/HPCProduction.png" alt="HPC production" />
+<figcaption aria-hidden="true">HPC production</figcaption>
+</figure>
+</div><div class="column" style="width:50%;">
+<h3 id="data-production-and-diffusion">Data production and
+diffusion</h3>
+<ul>
+<li>Continuous data production (L0 –&gt; L2)</li>
+<li>Data portals, catalogs</li>
+<li>Processing or reprocessing campains</li>
+<li>Technical Domain: HTC</li>
+<li>CNES Projects: SWOT, THEIA, SWH, SSALTO, PEPS</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="cnes-typical-use-cases-3" class="slide level2">
+<h2>CNES typical use cases (3)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="data-analysis-dowstream-research">Data analysis, dowstream
+research</h3>
+<ul>
+<li>Scientific studies on data prodcuts</li>
+<li>Multi temporal or cross domain analysis</li>
+<li>EO or astronomical Data</li>
+<li>Technical Domain: HTC, Big Data, AI</li>
+<li>CNES labs or projects : CESBIO, LEGOS, AI4Geo, EOLab</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<figure>
+<img data-src="images/HPCDownstream.png" alt="HPC downstream" />
+<figcaption aria-hidden="true">HPC downstream</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="architecture-big-picture" class="slide level2">
+<h2>Architecture, big picture</h2>
+<figure>
+<img
+data-src="https://www.marquette.edu/high-performance-computing/images/architecture.png"
+style="width:50.0%" alt="HPC Architecture" />
+<figcaption aria-hidden="true">HPC Architecture</figcaption>
+</figure>
+<p>Several things: Login nodes, Admin/Scheduler nodes, Compute
+resources, Parallel FS, RMDA Network</p>
+</section>
+<section id="job-scheduler" class="slide level2">
+<h2>Job scheduler</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Job Queuing System</li>
+<li>Job = Resources, Walltime, Queue, Account, etc.</li>
+<li>Resources management and scheduling</li>
+<li>Priority, fairshare partition, QoS</li>
+<li>SLURM, PBS, SGE, LSF, etc.</li>
+</ul>
+<figure>
+<img data-src="images/HPCScheduler.png" alt="HPC Scheduler" />
+<figcaption aria-hidden="true">HPC Scheduler</figcaption>
+</figure>
+</div><div class="column" style="width:50%;">
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=serial_job_test    # Job name</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --ntasks=1                    # Run on a single CPU</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --mem=1gb                     # Job memory request</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --time=00:05:00               # Time limit hrs:min:sec</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --output=serial_test_%j.log   # Standard output and error log</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">module</span> load python</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> /data/training/SLURM/plot_template.py</span></code></pre></div>
+</div>
+</div>
+</section>
+<section id="high-performance-storage" class="slide level2">
+<h2>High Performance Storage</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>POSIX file system</li>
+<li>Usually based on powerfull SAN storage infrastructure</li>
+<li>High performance and capacity: millions IO/s, hundreds GB/s,
+hundreds PB capacity.</li>
+<li>Spectrum Scale (GPFS) and Lustre</li>
+<li>Other players: WekaIO, BeeGFS</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<figure>
+<img data-src="images/GPFSHALArchitecture.png" style="width:70.0%"
+alt="HAL GPFS" />
+<figcaption aria-hidden="true">HAL GPFS</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="software-technologies" class="slide level2">
+<h2>Software technologies</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>Classical HPC: C and Fortran
+<ul>
+<li>Compiled languages, hardware optimized</li>
+<li>MPI &amp; OpenMP</li>
+<li>CUDA, OpenACC</li>
+</ul></li>
+<li>More and More: Python, Julia
+<ul>
+<li>Interpreted Languages, easyer to use</li>
+<li>Lots of performant libraries to reuse (e.g. Numpy, Scipy, Pandas,
+etc.)</li>
+<li>Parallel and distributed computations:
+<ul>
+<li>Multiprocessing</li>
+<li>MPI4Py : Python over MPI</li>
+<li>Dask, Ray, etc.</li>
+</ul></li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<figure>
+<img
+data-src="https://cvw.cac.cornell.edu/hybrid/images/mpimultistampede70pct.png"
+alt="MPI Code" />
+<figcaption aria-hidden="true">MPI Code</figcaption>
+</figure>
+</div>
+</div>
+</section></section>
+<section>
+<section
+id="from-hpc-to-big-data-to-cloud-and-high-performance-data-analytics"
+class="title-slide slide level1">
+<h1>From HPC to Big Data to Cloud and High Performance Data
+Analytics</h1>
+
+</section>
+<section id="hpc-platform-story-and-use-case" class="slide level2">
+<h2>HPC platform, story and use case</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<blockquote>
+<p>HPC = High Performance Computing</p>
+</blockquote>
+<ul>
+<li>Firsts HPC platforms built in the 1960s</li>
+<li>Mainly compute bounds algorithms</li>
+<li>At first for Weather forcasting and Aerodynamic research</li>
+<li>Structure modeling and fluid mecanics by discretization</li>
+<li>Needs (needed?) high performance hardware (network, CPUs,
+storage)</li>
+<li>Compute and storage are separated</li>
+<li>Uses a resource scheduler</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<figure>
+<img
+data-src="http://www.idris.fr/media/images/jean-zay-annonce-01.jpg?id=web%3Aeng%3Ajean-zay%3Acpu%3Ajean-zay-cpu-hw-eng"
+alt="Jean-Zay supercomputer" />
+<figcaption aria-hidden="true">Jean-Zay supercomputer</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="top500" class="slide level2">
+<h2>TOP500</h2>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 10%" />
+<col style="width: 10%" />
+<col style="width: 24%" />
+<col style="width: 26%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rank</th>
+<th>System</th>
+<th>Cores</th>
+<th>Rmax (TFlop/s)</th>
+<th>Rpeak (TFlop/s)</th>
+<th>Power (kW)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Supercomputer Fugaku - Japan</td>
+<td>7,630,848</td>
+<td>442,010.0</td>
+<td>537,212.0</td>
+<td>29,899</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Summit - United States</td>
+<td>2,414,592</td>
+<td>148,600.0</td>
+<td>200,794.9</td>
+<td>10,096</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Sierra - United States</td>
+<td>1,572,480</td>
+<td>94,640.0</td>
+<td>125,712.0</td>
+<td>7,438</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>JUWELS Booster Module - Germany</td>
+<td>449,280</td>
+<td>44,120.0</td>
+<td>70,980.0</td>
+<td>1,764</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>PANGEA III - France</td>
+<td>291,024</td>
+<td>17,860.0</td>
+<td>25,025.8</td>
+<td>1,367</td>
+</tr>
+<tr class="even">
+<td>92</td>
+<td>Jean Zay - France</td>
+<td>93,960</td>
+<td>4,478.0</td>
+<td>7,345.6</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://top500.org/lists/top500/list/2021/06/">Top 500 (june
+2021)</a></p>
+</section>
+<section id="big-data-and-hadoop" class="slide level2">
+<h2>Big Data and Hadoop</h2>
+<ul>
+<li>First platforms in the 2000’s</li>
+<li>Mainly data bound algorithms</li>
+<li>Limitation in standard ethernet network performances = data
+locality</li>
+<li>At first for web indexing, or large amount of textual or tabular
+data analysis</li>
+<li>Web giant problem, then banking or IT stuf</li>
+<li>Use commodity hardware</li>
+<li>Compute and storage colocated</li>
+</ul>
+</section>
+<section id="hpda-convergence" class="slide level2">
+<h2>HPDA convergence</h2>
+<p><img data-src="images/HPDA.png" style="width:50.0%" /></p>
+<ul>
+<li>Hadoop world step towards HPC: YaRN, equivalent to HPC resources
+scheduler</li>
+<li>HPC step towards Big Data: hardware not so specialized</li>
+<li>Hadoop big limitation: non standard File System and compute and
+storage colocation</li>
+<li>HPC big limitation: storage can be difficult to scale</li>
+</ul>
+</section>
+<section id="cloud-computing-basics" class="slide level2">
+<h2>Cloud computing basics</h2>
+<p>Hence the cloud computing model…</p>
+<ul>
+<li>Compute resources separated from storage (but proximity is key)</li>
+<li>Can host anything, at first not compute oriented</li>
+<li>Object store model: Software Defined Storage as HDFS, specific
+interface (S3)</li>
+<li>Horizontal scalability of compute AND storage</li>
+<li>Resources on demand, mutualized between millions of users</li>
+<li>Infinite resources like for user</li>
+</ul>
+</section>
+<section id="distributed-programming-hadoop-vs-hpc-vs-cloud"
+class="slide level2">
+<h2>Distributed programming: Hadoop vs HPC vs Cloud</h2>
+<div class="columns">
+<div class="column" style="width:33%;">
+<h3 id="hadoop-1">Hadoop</h3>
+<ul>
+<li>Data bound algorithms</li>
+<li>Statistics</li>
+<li>Big volumes in input</li>
+<li>Often small outputs</li>
+<li>Can be used for computing problems, but not physical simulation</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="hpc-mpi">HPC (MPI)</h3>
+<ul>
+<li>Compute bound algorithms</li>
+<li>Small or medium amount of inputs,</li>
+<li>Medium or big outputs (big simulations)</li>
+<li>Can be used for data processing too (Dask)</li>
+</ul>
+</div><div class="column" style="width:33%;">
+<h3 id="cloud">Cloud</h3>
+<ul>
+<li>Anything: services, storage bound, compute bound</li>
+<li>Object store limitations for some HPC workflow</li>
+<li>Or not anymore: HPC as a Service</li>
+<li>Big Data as a Service too…</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="machine-learning-computations" class="slide level2">
+<h2>Machine Learning Computations</h2>
+<h3 id="machine-learning">Machine learning</h3>
+<ul>
+<li>Either lots of data in inputs</li>
+<li>Or lots of models to train (hyperparameter search)</li>
+<li>And of course data preprocessing</li>
+<li>Big Data or HPC or Cloud</li>
+</ul>
+<h3 id="gpgpu">GPGPU</h3>
+<ul>
+<li>Specific hardware (expensive)</li>
+<li>Really efficient for Deep Learning algorithms</li>
+<li>Image processing, Language processing</li>
+</ul>
+</section>
+<section id="quizz-4" class="slide level2">
+<h2>Quizz</h2>
+<p>How Big Data processing differs from classical HPC (multiple
+choices)?</p>
+<ul>
+<li>Answer A: It is compute bound</li>
+<li>Answer B: It is data bound</li>
+<li>Answer C: It uses specialized hardware</li>
+<li>Answer D: It uses commodity hardware</li>
+<li>Answer E: It is fault tolerant</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAHCklEQVR42u3d0ZLyKBAG0M3WvP8ruxdTZbkaMyh0NyTnXP21OxpEPyEgsN1ut3+AOv+qAqj18+dfbNt2/7dmE4bbXtP1m7rf//Lu359d49sH7n4XnO+LYEj9lJRz9wv68T/6+v6gJdy2bfJqut1uu++umGW+hHcvatu2p4+Q1H1zT3jwBfZbxWo27vtl8oo9TuBTX4nx94TffT4Oeo/DbzKf3vvG53ws4f0j9a7HtdvXetcxe/e53P0i+7Sinor6aR1+8WX6esXGZzjxHURISzj2m+z+tr32IR//15ArPj5h+3MelLDxUY8XeirD0y30Y3Px+nF89wE9rqjfvt+ndfhU4IGh3f3yGvguX6U7GnT/c9CqDHmHvujLHZTw00e9K3xnD/PPa31Xh50vub20T189ctjaHf1tExIqa+wlkt/dd3fOr1U3Zx/s68HtpybuTGNOc90T5oxADnzDjgfNMwv/eqc3/4Dzpy/2zxtmsZylO7p7v3QwVjEwNh/1ylpK2Fj4j15Fyx+/u+ccUkXD7/zTCn9W2593bp15eB1y7BzM/Odwvri98C0lbC/8u9HR4/IfP+p4dPSL96tzXPr1lxsHjacfWn1QsSroUt/W2qXZ7wk5PfHTEgLxAzOAEIIQAkIIQggIIQghIIQghIAQghACQghCCAghCCEghCCEgBDCTJL2mJlwA+bdfT3ay9m+LUj/FuOFz5m2+8kqnxAtIeiOAkIIQggIIQghMErlNvgTDn9HFCltMqPz6hGvvXPa4yITJFpC0B0FIQSEEIQQEEK4pulO6o1YH9B59c41B+1/GbFgonOSoHN2J23aI+0ToiUE3VFACEEIASEEIQRG+VEFjyJmOCKKVLsp04RF0hICQghCCAghCCEghLAcUxT/E7HiIW1hR/vDd0240ZOWEBBCEEJACEEIASGEE5tuiqJ2/PoiEw8RD4/YpWrCT4iWEHRHASEEIQSEEIQQGKVyiqL2jOL2IqWdRbHKX175E6IlBCEEhBCEEBBCEEJglKQpiqV/+d4+UF47pF47G3G+U6y1hCCEgBCCEAJCCEIIhDrbWRSdWxhF7FbUPvheuylTp87CX3kFiZYQdEdBCAEhBCEEhBCuKWmKIuLohYih/85R6YjDJDpfUcR7FFGfETMcEW+clhB0RwEhBCEEhBCEEBhlurMoIsbEaw9tTjvaOuIV1Z7LXfup0xKC7igghCCEgBCCEAKhKs+iqP2NfMToee3wd9ouVbvPOeGGVKuctq0lBCEEIQSEEIQQEEK4pq3w9+NpkwSdahdMpE2QTDigf5G5JS0h6I6CEAJCCEIICCFcU+VGT2lD/50iTlmIKFJE4dtfUcQEScReXhPOxGgJQQhBCAEhBCEEhBCuqfK47F3tZ1F0Xqjz6hFnU0eYcJupzrc44mU6iwJ0RwEhBCEEhBCEEMi31Q7OdhV9kdMLJjxYO+00iIi3OI2NnkB3FBBCEEJACEEIgVA/S5QybclC2tD/0vUZUclpb4eWEBBCEEJACEEIASGESUy3iiJip6a0ctZevb1CIio57bDu860g0RKC7igIISCEIISAEMI1TbeKIm2npgkP1p5wvUVahayyAEVLCEIICCEIISCEIITAKEmrKGp/Yr9K4dulrY2IqLoJX3tahWgJQXcUEEIQQkAIQQiBu8qNntJ216nd1yhifmXCV7TKFlsTHmWhJQTdURBCQAhBCAEhhGuqXEURoXaGI+2QhtpzpK+8LkRLCLqjgBCCEAJCCEIIjFJ5FsUqpy6vsqdT5yj/Kqs9OtUuAdESgu4oIIQghIAQghACdz8nez2r7BMVcfUJ5wMi1kacb2mFlhCEEIQQEEIQQkAI4ZoqpygilgLUmvDkhlWOx1j6vGstIeiOAkIIQggIIQgh8IWkKYrOweLao5jTihSxzVTnPFDE/ErtSRiOywaEEIQQEEIQQkAIYRJJUxQTLoPYHYCOOMW6s0Ii9jWa8MiNziKtMgemJQTdUUAIQQgBIQQhBO6mOy47Qud8QPtkRu1h3Z01XzuNlLa0wlkUgBCCEAJCCEIICCFMYrrjsmsPQ45YSZB2ZHTarEnnw2uPnbDREyCEIISAEIIQAkIIk/hRBX+K2BYpbSql9rjszsUiE07kaAlBdxQQQhBCQAhBCIFRTFGMlHZIw67OwffOC0WcG1G7LkRLCLqjgBCCEAJCCEIIhNpydrNJO2Uh7epL71ZUu5vW0odeaAlBdxQQQhBCQAhBCIFRKldRTPh79vZyRpx33fnwtNmICadnavfd0hKC7igghCCEgBCCEAJf2Cb8UTloCQEhBCEEhBCEEBBCEEJACEEIASEEIQSEEIQQEEIQQkAIQQgBIQQhBIQQhBAQQhBCQAhBCAEhBCEEhBCEEBBCEEJACEEIASGEZfwHKPS4ce4VSBQAAAAASUVORK5CYII="
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_425">Answer link</a>
+<em>Key: xf</em></p>
+</section></section>
+<section>
+<section id="bi-vs-big-data" class="title-slide slide level1">
+<h1>BI vs Big Data</h1>
+
+</section>
+<section id="business-intelligence" class="slide level2">
+<h2>Business Intelligence</h2>
+<blockquote>
+<p>Business intelligence (BI) comprises the strategies and technologies
+used by enterprises for the data analysis of business information.</p>
+<p>BI technologies provide historical, current, and predictive views of
+business operations.</p>
+</blockquote>
+<p><em>Wikipedia</em></p>
+<p>Business Intelligence <em>can</em> use Big Data ecosystems, but is
+more commonly considered something different.</p>
+<p><a
+href="https://medium.com/doctolib/data-engineers-are-no-longer-data-folks-d10d44712580">https://medium.com/doctolib/data-engineers-are-no-longer-data-folks-d10d44712580</a>
+<a
+href="https://alphalyr.fr/blog/difference-bi-business-intelligence-big-data/">https://alphalyr.fr/blog/difference-bi-business-intelligence-big-data/</a></p>
+</section>
+<section id="classical-bi-key-points" class="slide level2">
+<h2>Classical BI key points</h2>
+<ul>
+<li>Build data systems from Business questions</li>
+<li>KPI and business decisions oriented</li>
+<li>Data warehouse, mainframe = Big server with closed technology</li>
+<li>Use structured data, like SQL databases,</li>
+<li>Oriented towards Data Value</li>
+</ul>
+</section>
+<section id="big-data-key-points" class="slide level2">
+<h2>Big Data key points</h2>
+<ul>
+<li>Find insights from the data systems,</li>
+<li>KPI and business of course, but many more use cases</li>
+<li>Distributed architecture, lot of Open Source</li>
+<li>Different toolset (Hadoop, Python),</li>
+<li>Every data flavor, keep anything!</li>
+<li>Data Volume, Variety, Velocity</li>
+</ul>
+</section></section>
+<section>
+<section id="hadoop-and-big-data-legacy"
+class="title-slide slide level1">
+<h1>Hadoop and Big Data legacy</h1>
+
+</section>
+<section id="is-hadoop-dead" class="slide level2">
+<h2>Is Hadoop dead?</h2>
+<p>Not quite yet. Still <strong>used in many places</strong></p>
+<div class="fragment">
+<p>It grew up with <strong>web giants</strong>, producing a really rich
+and <strong>open source</strong> ecosystem</p>
+</div>
+<div class="fragment">
+<p>But clearly the two main components (HDFS and MapReduce) are now
+<strong>deprecated</strong></p>
+</div>
+<div class="fragment">
+<p>And have paved the way to better alternatives</p>
+</div>
+</section>
+<section id="future-of-big-data" class="slide level2">
+<h2>Future of Big Data</h2>
+<p>Infrastructure: Private or public cloud, and HPC(DA) in some
+cases.</p>
+<div class="fragment">
+<p>HDFS? Object Storage!</p>
+</div>
+<div class="fragment">
+<p>MapReduce? Spark, Dask.</p>
+</div>
+<div class="fragment">
+<p>Chunked file format (SequenceFile)? Parquet, Zarr, Cloud optimized
+Geotiff.</p>
+</div>
+<div class="fragment">
+<p>YaRN? HPC job scheduler, or Kubernetes</p>
+</div>
+<div class="fragment">
+<h3 id="cloud-computing">Cloud Computing</h3>
+</div>
+</section>
+<section id="quizz-5" class="slide level2">
+<h2>Quizz</h2>
+<p>What technologies are replacing Hadoop ecosystem (multiple
+choices)?</p>
+<ul>
+<li>Answer A: Map Reduce</li>
+<li>Answer B: MPI (Message Passing Interface)</li>
+<li>Answer C: Spark</li>
+<li>Answer D: Cloud computing and object storage</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_722">Answer link</a>
+<em>Key: ez</em></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+       // Parallax background image
+       parallaxBackgroundImage: 'images/background-logo.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1800,
+
+        height: 900,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.1,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

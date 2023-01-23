@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Guillaume Eynard-Bontemps, CNES (Centre National d’Etudes Spatiales - French Space Agency)">
+  <meta name="dcterms.date" content="2020-11-15">
+  <title>Spark Introduction</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/solarized.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Spark Introduction</h1>
+  <p class="author">Guillaume Eynard-Bontemps, CNES (Centre National
+d’Etudes Spatiales - French Space Agency)</p>
+  <p class="date">2020-11-15</p>
+</section>
+
+<section>
+<section id="spark-introduction" class="title-slide slide level1">
+<h1>Spark Introduction</h1>
+
+</section>
+<section id="spark-history" class="slide level2">
+<h2>Spark History</h2>
+<ul>
+<li>Research project at the <a href="https://amplab.cs.berkeley.edu/">UC
+Berkeley AMPLab</a>, started in 2009</li>
+<li>Open sourced in early 2010:
+<ul>
+<li>2013: Moved to Apache Software Foundation</li>
+<li>2014: 1.0 release, top level Apache project</li>
+<li>2016: 2.0 release</li>
+<li>2020: 3.0 release</li>
+</ul></li>
+<li>Now with 100s of developers</li>
+</ul>
+</section>
+<section id="spark-goal-and-key-features" class="slide level2">
+<h2>Spark goal and key features</h2>
+<p>From <a href="https://spark.apache.org/research.html">Spark Research
+homepage</a>:</p>
+<blockquote>
+<p>Our goal was to design a programming model that supports a
+<strong>much wider class</strong> of applications than MapReduce, while
+maintaining its automatic <strong>fault tolerance</strong>. In
+particular, MapReduce is <strong>inefficient for multi-pass
+applications</strong> (…).</p>
+</blockquote>
+<ul>
+<li>Iterative algorithms (many machine learning algorithms)</li>
+<li>Interactive data mining</li>
+<li>Streaming applications that maintain aggregate state over time</li>
+</ul>
+</section>
+<section id="spark-vs-map-reduce" class="slide level2">
+<h2>Spark vs Map Reduce</h2>
+<figure>
+<img
+data-src="https://i0.wp.com/blog.knoldus.com/wp-content/uploads/2018/10/Difference-between-MapReduce-and-Spark_A.jpg?w=700&amp;ssl=1"
+alt="Difference between MapReduce and Spark (Knoldus)" />
+<figcaption aria-hidden="true">Difference between MapReduce and Spark
+(Knoldus)</figcaption>
+</figure>
+<ul>
+<li>MapReduce alternative which provides in memory processing (100x
+faster)</li>
+<li>A lot of other things, tools, higher level API</li>
+</ul>
+</section>
+<section id="tools-and-ecosystem" class="slide level2">
+<h2>Tools and ecosystem</h2>
+<div class="columns">
+<div class="column" style="width:70%;">
+<figure>
+<img
+data-src="https://databricks.com/wp-content/uploads/2016/02/Spark-Stack-1024x474.png"
+style="width:60.0%" alt="Spark stack (Databricks)" />
+<figcaption aria-hidden="true">Spark stack (Databricks)</figcaption>
+</figure>
+<figure>
+<img
+data-src="https://databricks.com/wp-content/uploads/2015/02/Introducing-DataFrames-in-Spark-for-Large-Scale-Data-Science1.png"
+style="width:60.0%" alt="Spark sources (Databrick)" />
+<figcaption aria-hidden="true">Spark sources (Databrick)</figcaption>
+</figure>
+</div><div class="column" style="width:30%;">
+<p><img
+data-src="https://www.python.org/static/community_logos/python-logo-master-v3-TM.png"
+style="width:40.0%" /></p>
+<p><img data-src="https://www.r-project.org/logo/Rlogo.png"
+style="width:30.0%" /></p>
+<p><img
+data-src="https://www.scala-lang.org/files/archive/spec/2.11/public/images/scala-logo-red-spiral-dark.png"
+style="width:40.0%" /></p>
+<p><img data-src="https://www.oracle.com/a/ocom/img/cb71-java-logo.png"
+style="width:40.0%" /></p>
+</div>
+</div>
+</section>
+<section id="quizz" class="slide level2">
+<h2>Quizz</h2>
+<p>What’s the main difference between Spark and Hadoop Map Reduce?</p>
+<ul>
+<li>Answer A: Spark uses another algorithm at the heart of its computing
+model</li>
+<li>Answer B: Spark can work on memory and is much faster</li>
+<li>Answer C: Spark has a better name</li>
+<li>Answer D: Spark provides many more APIs</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAIAAAD2HxkiAAAHEElEQVR42u3dXa+qOBgG0GHi///LnoudGKMISHk/kLWuJnM2UiqPra200/1+/w+o878qgFq31b+Ypunx35pNONz0nq6/1P39n0///d059h44+1nwex8Eh9RPXMFePMr58q/v5W97XU1bwmmamlfW/X6fvSfELKHmV69omqaXW+jxZvW/tRp9J1z42PurYp9qcXf56Sr2pczPfaXniL78f3Z+J9x3fyz0Hg//krnaL1ot4eOmef+sef/Inz3R+332fv/NfpB9W1EvRf22Dvd9mK6ea+Fry19RtYfrLeGxn1jPH4Qvr3n4Z+TzC25/zYUSbjzq0wf/y78+txizLd7qbT17UX/39Ld1+FLg7UctnEsv6cjuaND3n4VW5ZAc7ujLLZTw26M+FX6wh7l6rn11+O0lP3+mfDqXPueR3dFHtyFnlKLnq+073WzV9WwZgkqlz3nYd8KcEcgD36dPX+HyC//+Te8H7sh9/cyXQOqsFnRHZ78vLYxVHBibr3plW0q4sfBfXcWWP/70nfOQKtpe1IVivLzOp/6zBG56U1a/uQ3m4X3IcXAwc6Hpmx3eHCnh9sJ/Gh1dLv/yUcujozver33j0hsHhE3W7w+LOrrU7SIY3b8T8vPET0sIxA/MAEIIQggIIQghIIQghIAQghACQghCCAghCCEghCCEgBCCEAJCCJ0krTHTcHnmhc2Gqs5eW/P71l/Lf83aO0RLCLqjgBCCEAJCCEIIHKVyGfyGw/S1hW9Yzk/7MeYcfuo7REsIuqOAEIIQAkIIQggsa7dT7+BgccSg9vbnLQb/MuLBjsFJgsHXbDiR03BXXC0hCCEIISCEIISAEMI13VTBs7TZiFkRCyilVUjEXIiWEBBCEEJACEEIASGEH2aKYl3awkS1zxxETM+Yt9ASghACQghCCAghCCHwSbspitrx67Qh9dr1l7ZPJ9TWUsM7REsIuqOAEIIQAkIIQggcpXKKonaP4ojCp60T1fAvB2vp9+4QLSEIISCEIISAEIIQAsuSpigusrZP7eMFaXMMg3955TtESwhCCAghCCEghCCEwMPUbWg4YqQ7Yux++9nTamnwigYfboioz4hyNnw3tYSgOwpCCAghCCEghHBNSU9RDD5eELE/8+/96j9tNiLiLU5bEiptKkVLCLqjgBCCEAJCCEIILGu3F8Xg0H/EkwSD49e1TzxEOPXMQe1iXFpC0B0FhBCEEBBCEELgoXIvirSfrjcc/q5dfylC2mzE7+22rSUEIQQhBIQQhBAQQrimyqco0saaa1d/StvFuvbJjIbPhTRc00lLCLqjgBCCEAJCCEIIPNyucJERg++zIp5jOPVuEBc5XEsIuqOAEIIQAkIIQgjsULld9qyIPbQHTzR4RREVkvYowPax+8EnSNKmkSIO1xKC7igghCCEgBCCEAI7TLWDs1tLWfp0QsMf40csSJVWSxFVl1YhWkLQHQWEEIQQEEIQQuAo7aYo0naDaHh42mUOnmjwjWs4t6QlBN1RQAhBCAEhBCEE8p1jL4pTL+MTMSJ/lnWiIh5A2X5Fg5uK24sCdEcBIQQhBIQQhBAIlfQURe06PA1XATrL6Pmp50LO8ryFlhB0R0EIASEEIQSEEK6pcqGn2sH32svcrnY/hrNsEVG7yJWWEHRHASEEIQSEEIQQ2CFpoae0X9NHnH1w7L7hsxHbTxRx7RHvZu1khpYQdEcBIQQhBIQQhBDY4fZj15M2ft1wX+7BWtqudrPutBkjLSHojgJCCEIICCEIIRCqcooi7fGCUz+yMHhFDWdNIt6O2rNrCUF3FBBCEEJACEEIgR3O8RRF7cpC24s0WPjBw8+ytXVEJW/XcLMTLSEIIQghIIQghIAQwjXdrnCRtftGzB7ecPC9dtak4cbatssG3VFACEEIASEEIQRCTQ1/VF5ZHaXLTDXcCaPh0P9ZNvzQEoLuKCCEIISAEIIQAsuSnqJouIjQWdaJGjy8djZi8IoitvGIOFxLCLqjgBCCEAJCCEII7NBuu+wIaRMkEasVRUxmRAzop63UNFjzaZu0awlBdxQQQhBCQAhBCIFl7faiOMtId1qR0h6DSFs8qraSGz7QoyUEIQQhBIQQhBAQQrimmypYNThJkDYfMCttPiCiQgavKKLmtYSgOwoIIQghIIQghMBRTFGsS9t6Ie01Gz5rsn06IWLaw14UoDsKCCEIISCEIIRAvnZTFLWDxYM/sU/biyJi/aWGb8dgJdfuMKElBN1RQAhBCAEhBCEEllVOUTTcFWC7hltEpC1hdJYdOwYrWUsIuqOAEIIQAkIIQgiEmhr+qBy0hIAQghACQghCCAghCCEghCCEgBCCEAJCCEIICCEIISCEIISAEIIQAkIIQggIIQghIIQghIAQghACQghCCAghCCEghCCEgBDCafwDl6PEhoVbPv4AAAAASUVORK5CYII="
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_530">Answer link</a>
+<em>Key: hg</em></p>
+</section>
+<section id="apis" class="slide level2">
+<h2>APIs</h2>
+<p><img
+data-src="https://databricks.com/wp-content/uploads/2018/05/rdd.png" /></p>
+</section>
+<section id="resilient-distributed-dataset-rdd" class="slide level2">
+<h2>Resilient Distributed Dataset (RDD)</h2>
+<ul>
+<li>Was primary user-facing API in Spark</li>
+<li>An RDD is an
+<ul>
+<li><strong>immutable</strong></li>
+<li><strong>distributed</strong></li>
+<li><strong>collection</strong> of elements of your data</li>
+</ul></li>
+<li>partitioned across nodes in your cluster</li>
+<li>operated in parallel with a low-level API</li>
+<li>Offers <strong>transformations</strong> and
+<strong>actions</strong></li>
+<li>Unstructured datasets</li>
+<li>Functional programming constructs</li>
+<li>In memory, <strong>fault tolerant</strong></li>
+<li>No schema, less optimization</li>
+</ul>
+</section>
+<section id="dataframes-and-datasets" class="slide level2">
+<h2>Dataframes and Datasets</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Also an immutable distributed collection of data</li>
+<li>Built on top of RDDs</li>
+<li>Structured data, organized in named columns</li>
+<li>Impose a structure, gives higher-level abstraction</li>
+<li>SQL like operations</li>
+<li>Dataset: strongly typed objects</li>
+<li>Catalyst optimizer, better performances</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><img
+data-src="https://databricks.com/wp-content/uploads/2016/06/Unified-Apache-Spark-2.0-API-1.png" /></p>
+</div>
+</div>
+</section>
+<section id="transformations-and-actions" class="slide level2">
+<h2>Transformations and Actions</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<h3 id="transformations"><a
+href="https://databricks.com/glossary/what-are-transformations">Transformations</a></h3>
+<ul>
+<li>Create a new (immutable) dataset from an existing one</li>
+<li>Instruct Spark how you would like to modify the Data</li>
+<li>Narrow Dependencies: 1 to 1 input to output</li>
+<li>Wide Dependencies (shuffles, so MapReduce): 1 to N</li>
+<li>transformations in Spark are <strong>lazy</strong>
+<ul>
+<li>No computations</li>
+<li>Just remember the transformations from input dataset</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Return a value to the driver program</li>
+<li>After running a computation on the dataset</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="transformations-and-actions-examples" class="slide level2">
+<h2>Transformations and Actions examples</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="transformations-1"><a
+href="https://databricks.com/glossary/what-are-transformations">Transformations</a></h3>
+<table>
+<thead>
+<tr class="header">
+<th>Transformations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>map*</td>
+</tr>
+<tr class="even">
+<td>filter</td>
+</tr>
+<tr class="odd">
+<td>groupByKey</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<h3 id="actions-1">Actions</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>reduce</td>
+</tr>
+<tr class="even">
+<td>collect</td>
+</tr>
+<tr class="odd">
+<td>count</td>
+</tr>
+<tr class="even">
+<td>first</td>
+</tr>
+<tr class="odd">
+<td>take</td>
+</tr>
+<tr class="even">
+<td>saveAs…</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="some-code" class="slide level2">
+<h2>Some code</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lines <span class="op">=</span> sc.textFile(<span class="st">&quot;data.txt&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>lineLengths <span class="op">=</span> lines.<span class="bu">map</span>(<span class="kw">lambda</span> s: <span class="bu">len</span>(s))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>totalLength <span class="op">=</span> lineLengths.<span class="bu">reduce</span>(<span class="kw">lambda</span> a, b: a <span class="op">+</span> b)</span></code></pre></div>
+</section>
+<section id="execution-plan-and-dags" class="slide level2">
+<h2>Execution Plan and DAGS</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rdd1.<span class="bu">map</span>(splitlines).<span class="bu">filter</span>(<span class="st">&quot;ERROR&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rdd2.<span class="bu">map</span>(splitlines).groupBy(key)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>rdd2.join(rdd1, key).take(<span class="dv">10</span>)</span></code></pre></div>
+<p><img
+data-src="https://databricks.com/wp-content/uploads/2014/03/spark-devs1.png" /></p>
+</div><div class="column" style="width:40%;">
+<ul>
+<li>Job: each action triggers a job</li>
+<li>Stages:
+<ul>
+<li>Group of Narrow transformation</li>
+<li>Can be processed in one go</li>
+<li><strong>Shuffling</strong> (Wide transformations) split stages</li>
+</ul></li>
+<li>Task: unitary transformation on a data chunk</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="streaming" class="slide level2">
+<h2>Streaming</h2>
+<p><img
+data-src="https://spark.apache.org/docs/latest/img/streaming-arch.png" /></p>
+<p><img
+data-src="https://spark.apache.org/docs/latest/img/streaming-flow.png" /></p>
+</section>
+<section id="mllib" class="slide level2">
+<h2>MLLib</h2>
+<ul>
+<li>Uses Dataframe API as inputs</li>
+<li>Pipeline made of
+<ul>
+<li>Transformers (analogy to transformation)</li>
+<li>Estimator (can be actions)</li>
+</ul></li>
+</ul>
+<p><img
+data-src="https://spark.apache.org/docs/latest/img/ml-Pipeline.png"
+style="width:50.0%" /></p>
+<p><img
+data-src="https://spark.apache.org/docs/latest/img/ml-PipelineModel.png"
+style="width:50.0%" /></p>
+</section>
+<section id="spark-application-and-execution" class="slide level2">
+<h2>Spark Application and execution</h2>
+<p><img
+data-src="https://spark.apache.org/docs/latest/img/cluster-overview.png" />
+<img
+data-src="https://databricks.com/wp-content/uploads/2018/05/Spark-Applications.png" /></p>
+</section>
+<section id="dashboard" class="slide level2">
+<h2>Dashboard</h2>
+<p><img
+data-src="https://spark.apache.org/docs/3.0.0-preview/img/JobPageDetail2.png"
+style="width:20.0%" alt="Spark DAG" /> <img
+data-src="https://spark.apache.org/docs/3.0.0-preview/img/AllStagesPageDetail3.png"
+style="width:70.0%" alt="Spark stages details" /></p>
+</section>
+<section id="dashboard-2" class="slide level2">
+<h2>Dashboard 2</h2>
+<figure>
+<img
+data-src="https://spark.apache.org/docs/3.0.0-preview/img/AllStagesPageDetail6.png"
+style="width:60.0%" alt="Spark tasks" />
+<figcaption aria-hidden="true">Spark tasks</figcaption>
+</figure>
+</section>
+<section id="quizz-1" class="slide level2">
+<h2>Quizz</h2>
+<p>What’s the main API of Spark?</p>
+<ul>
+<li>Answer A: MLLib</li>
+<li>Answer B: RDDs (Resilitent Distributed Datasets)</li>
+<li>Answer C: Datasets</li>
+<li>Answer D: Transformations</li>
+</ul>
+<figure>
+<img
+data-src="data:image/png;base64,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"
+alt="Answer" />
+<figcaption aria-hidden="true">Answer</figcaption>
+</figure>
+<p><a href="https://toreply.univ-lille.fr/reponse_37">Answer link</a>
+<em>Key: op</em></p>
+</section></section>
+<section>
+<section id="play-with-map-reduce-through-spark"
+class="title-slide slide level1">
+<h1>Play with Map Reduce through Spark</h1>
+
+</section>
+<section id="context" class="slide level2">
+<h2>Context</h2>
+<ul>
+<li>Interactive notebook (developed some years ago…)</li>
+<li>Pre-configured</li>
+<li>Warm up on <a
+href="https://www.geeksforgeeks.org/estimating-value-pi-using-monte-carlo/">Py
+computation</a></li>
+</ul>
+<p><img
+data-src="https://camo.githubusercontent.com/e95b477d89032e6f4a7c7bc8fadaf4c8d185c900/687474703a2f2f7777772e706879736963732e736d752e6564752f66617474617275732f70692e706e67"
+style="width:20.0%" /></p>
+<ul>
+<li>RDDs</li>
+<li>Dataframes</li>
+</ul>
+</section>
+<section id="notebook" class="slide level2">
+<h2>Notebook</h2>
+<p><a
+href="https://github.com/guillaumeeb/isae-supaero-aibt103-bigdata/blob/main/notebooks/IntroductionToSpark.ipynb">Notebook
+is here</a></p>
+<p>Easiest:</p>
+<p><a
+href="https://mybinder.org/v2/gh/guillaumeeb/isae-supaero-aibt103-bigdata/main?urlpath=lab">Run
+it on Binder</a></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: false,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+       // Parallax background image
+       parallaxBackgroundImage: 'images/background-logo.png', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1800,
+
+        height: 900,
+
+        // Bounds for smallest/largest possible scale to apply to content
+        minScale: 0.1,
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
