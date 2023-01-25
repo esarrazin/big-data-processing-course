@@ -130,7 +130,7 @@ class="title-slide slide level1">
 <figure>
 <img
 data-src="https://www.rstudio.com/images/screenshots/rstudio-windows.png"
-alt="R Studio" />
+style="width:80.0%" alt="R Studio" />
 <figcaption aria-hidden="true">R Studio</figcaption>
 </figure>
 </div>
@@ -218,7 +218,8 @@ data-src="https://fr.mathworks.com/help/matlab/learn_matlab/desktop.png" /></p>
 </section>
 <section id="python-the-most-used-language" class="slide level2">
 <h2>Python the most used language?</h2>
-<p><img data-src="images/stackoverflow_trends.svg" /></p>
+<p><img data-src="images/stackoverflow_trends.svg"
+style="width:120.0%" /></p>
 </section>
 <section id="kaggle-languages-popularity" class="slide level2">
 <h2>Kaggle Languages Popularity</h2>
@@ -283,8 +284,7 @@ href="https://medium.com/@RRamya02/nearly-every-scientist-working-in-python-draw
 every scientist working in Python draws on the power of NumPy</a></p>
 </blockquote>
 </div><div class="column" style="width:40%;">
-<p><img data-src="https://numpy.org/doc/stable/_static/numpylogo.svg"
-height="100" /></p>
+<p><img data-src="images/numpylogo.svg" height="100" /></p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The standard way to import NumPy:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -510,16 +510,20 @@ slowdown</li>
 <ul>
 <li>Multi-core computing</li>
 <li>Symmetric multiprocessing</li>
-<li>Distributed computing</li>
+<li>Distributed computing
+<ul>
 <li>Cluster computing</li>
 <li>Cloud computing</li>
 <li>Grid computing</li>
-<li>Specialized parallel computers</li>
+</ul></li>
+<li>Specialized parallel computers
+<ul>
 <li>General-purpose computing on graphics processing units (GPGPU)</li>
 <li>Reconfigurable computing with field-programmable gate arrays
 (FPGA)</li>
 <li>Application-specific integrated circuits</li>
 <li>Vector processors</li>
+</ul></li>
 </ul>
 </section>
 <section id="parallel-computing-with-python" class="slide level2">
@@ -550,7 +554,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a hr
 <section id="dask" class="slide level2">
 <h2>Dask</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:65%;">
 <p><img data-src="images/Dask-Logo-lockup-primary.png"
 height="100" /></p>
 <ul>
@@ -562,14 +566,14 @@ memory</li>
 <li>More low level APIs for distributing any algorithm</li>
 <li>More this afternoon</li>
 </ul>
+</div><div class="column" style="width:35%;">
+<p><img
+data-src="https://docs.dask.org/en/latest/_images/dask-dataframe.svg"
+style="width:80.0%" /></p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dask.dataframe <span class="im">as</span> dd</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> dd.read_csv(<span class="st">&#39;2014-*.csv&#39;</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df.describe().compute()</span></code></pre></div>
-</div><div class="column" style="width:50%;">
-<p><img
-data-src="https://docs.dask.org/en/latest/_images/dask-dataframe.svg"
-style="width:80.0%" /></p>
 </div>
 </div>
 </section>
@@ -590,8 +594,7 @@ and R interface</li>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="ray"><a href="https://www.ray.io">Ray</a></h3>
-<p><img data-src="https://docs.ray.io/en/latest/_static/ray_logo.png"
-height="100" /></p>
+<p><img data-src="images/ray_header_logo.png" height="100" /></p>
 <ul>
 <li>Scale general Python apps</li>
 <li>And a lot of high-level libs oriented towards Machine and Deep
@@ -639,6 +642,7 @@ class="title-slide slide level1">
 <h2>Landscape</h2>
 <figure>
 <img data-src="images/Python-viz-landscape-colors.png"
+style="width:80.0%"
 alt="Adaptation of Jake VanderPlas graphic about the Python visualization landscape, by Nicolas P. Rougier" />
 <figcaption aria-hidden="true">Adaptation of Jake VanderPlas graphic
 about the Python visualization landscape, by Nicolas P.
@@ -678,13 +682,13 @@ data-src="https://raw.githubusercontent.com/cldougl/plot_images/add_r_img/anim.g
 <div class="columns">
 <div class="column" style="width:35%;">
 <p><img data-src="http://static.bokeh.org/og/logotype-on-hex.png"
-height="100" /></p>
+height="80" /></p>
 <ul>
 <li>Interactive, publication-quality graphs</li>
 <li>Make dashboard with Dash</li>
 </ul>
 </div><div class="column" style="width:65%;">
-<p><img data-src="images/bokeh_plot.png" /></p>
+<p><img data-src="images/bokeh_plot.png" style="width:60.0%" /></p>
 </div>
 </div>
 </section>
@@ -757,8 +761,15 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a hr
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>]  <span class="co"># classes of each sample</span></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>clf.fit(X, y)</span></code></pre></div>
 </section>
+<section id="sickit-learn-1" class="slide level2">
+<h2>Sickit Learn</h2>
+<p><img data-src="https://scikit-learn.org/stable/_static/ml_map.png"
+style="width:70.0%" /></p>
+</section>
 <section id="tensorflow-keras" class="slide level2">
 <h2>TensorFlow, Keras</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p><img
 data-src="https://camo.githubusercontent.com/906e661107a3bc03104ca5d88336d1f4b0e80fdcac65efaf7904041d371c747f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6b657261732e696f2f696d672f6b657261732d6c6f676f2d323031382d6c617267652d313230302e706e67"
 height="100" /> <img
@@ -769,9 +780,12 @@ height="100" /></p>
 <li>Keras on top of Tensorflow</li>
 <li>Tensorflow complete platform, with TensorBoard and other tools</li>
 </ul>
+</div><div class="column" style="width:50%;">
 <p><img
 data-src="https://www.tensorflow.org/tensorboard/images/tensorboard.gif"
-style="width:50.0%" /></p>
+style="width:60.0%" /></p>
+</div>
+</div>
 </section>
 <section id="pytorch" class="slide level2">
 <h2>Pytorch</h2>
@@ -779,8 +793,11 @@ style="width:50.0%" /></p>
 <ul>
 <li>Deep Learning on GPU with no previous knowledge</li>
 <li>Always trolls about Keras/TF vs PyTorch</li>
+<li>Additional librairies:
+<ul>
 <li>pytorch-lightning</li>
 <li>pytorch3d</li>
+</ul></li>
 </ul>
 </section>
 <section id="gradient-boosting-algorithms" class="slide level2">
@@ -813,6 +830,44 @@ data-src="https://lightgbm.readthedocs.io/en/latest/_images/LightGBM_logo_black_
 height="100" /></p>
 </div>
 </div>
+</section>
+<section id="data-version-control" class="slide level2">
+<h2>Data Version Control</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/dvclogo.png" height="100" /></p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/dvcgraphic.png" style="width:80.0%" /></p>
+</div>
+</div>
+<ul>
+<li>Version your data and models: Store them in your cloud storage but
+keep their version info in your Git repo.</li>
+<li>Track experiments in your local Git repo (no servers needed).</li>
+<li>Share experiments and automatically reproduce anyone’s
+experiment.</li>
+</ul>
+</section>
+<section id="mlflow" class="slide level2">
+<h2>MLFlow</h2>
+<p><img data-src="images/MLflow-logo-final-black.png"
+height="100" /></p>
+<ul>
+<li>Tracking experiments to record and compare parameters and results
+(MLflow Tracking).</li>
+<li>Packaging ML code in a reusable, reproducible form in order to share
+with other data scientists or transfer to production (MLflow
+Projects).</li>
+<li>Managing and deploying models from a variety of ML libraries to a
+variety of model serving and inference platforms (MLflow Models).</li>
+<li>Providing a central model store to collaboratively manage the full
+lifecycle of an MLflow Model, including model versioning, stage
+transitions, and annotations (MLflow Model Registry).</li>
+</ul>
+</section>
+<section id="mlflow-1" class="slide level2">
+<h2>MLFlow</h2>
+<p><img data-src="images/mlflow_tracking.jpeg" /></p>
 </section>
 <section id="quizz-4" class="slide level2">
 <h2>Quizz</h2>
@@ -850,6 +905,15 @@ height="100" /></p>
 <li>Make them available on repositories</li>
 <li>Build environments automatically</li>
 </ul>
+</section>
+<section id="packaging-pip-conda-1" class="slide level2">
+<h2>Packaging: Pip / Conda</h2>
+<p><img
+data-src="https://pypi.org/static/images/logo-large.6bdbb439.svg"
+height="100" /> <img
+data-src="https://docs.conda.io/en/latest/_images/conda_logo.svg"
+height="100" /></p>
+<p>Difference between Conda and Pip according to Anaconda.</p>
 <table>
 <thead>
 <tr class="header">
@@ -886,10 +950,11 @@ height="100" /></p>
 </tr>
 </tbody>
 </table>
-<p>Difference between Conda and Pip according to Anaconda.</p>
 </section>
 <section id="numba" class="slide level2">
 <h2>Numba</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <p><img
 data-src="https://numba.pydata.org/_static/numba-blue-horizontal-rgb.svg"
 height="100" /></p>
@@ -903,6 +968,7 @@ runtime</li>
 <li>Python can approach the speeds of C or FORTRAN</li>
 <li>Just apply one of the Numba decorators</li>
 </ul>
+</div><div class="column" style="width:50%;">
 <div class="sourceCode" id="cb9"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numba <span class="im">import</span> jit</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
@@ -916,6 +982,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a hr
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (x <span class="op">**</span> <span class="dv">2</span> <span class="op">+</span> y <span class="op">**</span> <span class="dv">2</span>) <span class="op">&lt;</span> <span class="fl">1.0</span>:</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            acc <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">4.0</span> <span class="op">*</span> acc <span class="op">/</span> nsamples</span></code></pre></div>
+</div>
+</div>
 </section>
 <section id="binder" class="slide level2">
 <h2>Binder</h2>
