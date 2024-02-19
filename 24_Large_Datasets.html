@@ -152,12 +152,6 @@ Universe</li>
 </ul>
 </div>
 </div>
-</section>
-<section id="larger-datasets" class="slide level2">
-<h2>Larger datasets</h2>
-<ul>
-<li>Training large deep neural networks required large datasets</li>
-</ul>
 </section></section>
 <section>
 <section id="how-to-store-the-large-datasets"
@@ -244,6 +238,7 @@ much more limited</li>
 arrays</li>
 <li>Same performances than HDF5</li>
 <li>More flexible because chunking can be done along any dimension</li>
+<li>Cloud optimized</li>
 </ul>
 </section>
 <section id="comparison" class="slide level2">
@@ -340,12 +335,8 @@ class="title-slide slide level1">
 </section>
 <section id="distributed-data-storage" class="slide level2">
 <h2>Distributed data storage</h2>
-<ul>
-<li>HDFS</li>
-<li>Amazon S3</li>
-<li>Azure storage</li>
-<li>Google Cloud Storage</li>
-</ul>
+<p>Object storage: - HDFS - Amazon S3 - Azure storage - Google Cloud
+Storage</p>
 </section></section>
 <section>
 <section id="pandas-and-large-datasets"
@@ -377,6 +368,7 @@ class="slide level2">
 <li>Use pandas.Categorical for categorical data</li>
 <li>Use pandas.numeric() to downcast the numeric columns to their
 smallest types</li>
+<li>Use PyArrow data structure (available in Pandas 2)</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="sourceCode" id="cb2"><pre
@@ -408,6 +400,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a hr
 <section id="good-pratices-dask" class="slide level2">
 <h2>Good pratices: Dask</h2>
 <ul>
+<li>Use it only if needed, Pandas is often the best for dataset that
+fits in memory</li>
 <li>Dask includes dask.dataframe, a pandas-like API for working with
 larger than memory datasets in parallel.</li>
 <li>Dask can use multiple threads or processes on a single machine, or a
