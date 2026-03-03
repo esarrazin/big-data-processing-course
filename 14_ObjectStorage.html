@@ -4,17 +4,20 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="Guillaume Eynard-Bontemps, Hugues Larat, CNES (Centre National d’Etudes Spatiales - French Space Agency)">
-  <meta name="dcterms.date" content="2024-08-01">
+  <meta name="dcterms.date" content="2026-01-01">
   <title>Object Storage and Cloud Optimized Datasets</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
-  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^5/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^5/dist/reveal.css">
   <style>
     .reveal .sourceCode {  /* see #7635 */
       overflow: visible;
     }
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -96,7 +99,7 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/solarized.css" id="theme">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^5/dist/theme/solarized.css" id="theme">
 </head>
 <body>
   <div class="reveal">
@@ -106,7 +109,7 @@
   <h1 class="title">Object Storage and Cloud Optimized Datasets</h1>
   <p class="author">Guillaume Eynard-Bontemps, Hugues Larat, CNES
 (Centre National d’Etudes Spatiales - French Space Agency)</p>
-  <p class="date">2024-08-01</p>
+  <p class="date">2026</p>
 </section>
 
 <section>
@@ -126,8 +129,9 @@ identifier. (Wikipedia)</p>
 </blockquote>
 <p>But Why?</p>
 <ul>
-<li>Scalability. Scale-out, infinitly.</li>
-<li>Security/Reliability/Availability. Erasure Coding.</li>
+<li>Scalability. Scale-out. <strong>Infinitly…</strong></li>
+<li>Security/Reliability/Availability. <strong>Erasure
+Coding.</strong></li>
 <li>Cost. Commodity hardware.</li>
 <li>Performance (bandwith). Just need good network, and scale.</li>
 </ul>
@@ -158,11 +162,12 @@ storage</li>
 <li>Answer E: Dedicated API developed for simple transactions</li>
 </ul>
 <figure>
-<img data-src="" alt="Answer" />
-<figcaption aria-hidden="true">Answer</figcaption>
+<img
+data-src="https://cdn.strawpoll.com/images/polls/qr/6QnMQkd2bne.png"
+alt="https://strawpoll.com/6QnMQkd2bne" />
+<figcaption
+aria-hidden="true">https://strawpoll.com/6QnMQkd2bne</figcaption>
 </figure>
-<p><a href="https://toreply.univ-lille.fr/reponse_214">Answer link</a>
-<em>Key: mz</em></p>
 </section></section>
 <section>
 <section id="processing-and-cloud-optimized-datasets"
@@ -284,7 +289,7 @@ frameworks</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><img
-data-src="https://staging.dev.element84.com/wp-content/uploads/2019/04/smiley_tiled.png" /></p>
+data-src="https://guide.cloudnativegeo.org/images/cog-diagram-2.png" /></p>
 </div>
 </div>
 </section>
@@ -327,21 +332,22 @@ cloud object storage</li>
 <p>Object storage is always performant for scientific data
 processing.</p>
 <figure>
-<img data-src="" alt="Answer" />
-<figcaption aria-hidden="true">Answer</figcaption>
+<img
+data-src="https://cdn.strawpoll.com/images/polls/qr/kjn1DxzMjyQ.png"
+alt="https://strawpoll.com/kjn1DxzMjyQ" />
+<figcaption
+aria-hidden="true">https://strawpoll.com/kjn1DxzMjyQ</figcaption>
 </figure>
-<p><a href="https://toreply.univ-lille.fr/reponse_546">Answer link</a>
-<em>Key: qp</em></p>
 </section></section>
     </div>
   </div>
 
-  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+  <script src="https://unpkg.com/reveal.js@^5/dist/reveal.js"></script>
 
   <!-- reveal.js plugins -->
-  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
-  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
-  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^5/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^5/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^5/plugin/zoom/zoom.js"></script>
 
   <script>
 
